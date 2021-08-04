@@ -46,10 +46,12 @@ function LoginRegisterButtons({ action, setAction, username, password, setError 
         const btnRegisterOnClick = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
             event.preventDefault();
 
-            if (await LoginService.registerUser(username, password)) {
+            const registerResult = await LoginService.registerUser(username, password);
+
+            if (registerResult.success) {
                 history.push(successRedirect);
             } else {
-                setError('Try again');
+                setError(registerResult.reason);
             }
         };
 

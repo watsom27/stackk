@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "nukedist": "",
+    "nukedist": "rm -rf dist",
     "lint": "eslint --ext .tsx,.ts src/",
     "lint:fix": "eslint --fix --ext .tsx,.ts src/",
     "start:dev": "npm run nukedist && parcel src/index.html",

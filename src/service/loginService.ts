@@ -3,6 +3,11 @@ import 'firebase/auth';
 import { Feature, FeaturesConfig } from '~config/featuresConfig';
 import { Logger } from '~service/logger';
 
+interface LoginResponse {
+    success: boolean;
+    reason?: string;
+}
+
 export class LoginService {
     public static addStateChangeListener(listener: (user: firebase.User | null) => void): firebase.Unsubscribe {
         return firebase.auth().onAuthStateChanged(listener);
@@ -23,21 +28,30 @@ export class LoginService {
         return success;
     }
 
-    public static async registerUser(username: string, password: string): Promise<boolean> {
-        let success = false;
+    public static async registerUser(username: string, password: string): Promise<LoginResponse> {
+        let result: LoginResponse = {
+            success: false,
+        };
 
         if (FeaturesConfig.get(Feature.UserRegistration)) {
             try {
                 await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL);
                 await firebase.auth().createUserWithEmailAndPassword(username, password);
 
-                success = true;
+                result = {
+                    success: true,
+                };
             } catch (e) {
-                Logger.error(e);
+                result = {
+                    success: false,
+                    reason: e.message,
+                };
+
+                Logger.log(e.message);
             }
         }
 
-        return success;
+        return result;
     }
 
     public static logout(): void {
