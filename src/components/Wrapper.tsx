@@ -6,7 +6,7 @@ interface WrapperProps {
     showLogout?: boolean;
 }
 
-const TITLE_SUFFIX = 'Stack';
+const TITLE_SUFFIX = 'Stackk';
 
 export function Wrapper({ title, showLogout, children }: PropsWithChildren<WrapperProps>): JSX.Element {
     useEffect(() => {

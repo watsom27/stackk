@@ -3,7 +3,7 @@ import { BrowserRouter, Redirect, Route, Switch, useLocation } from 'react-route
 import { Login } from '~pages/Login';
 import { NotFound } from '~pages/NotFound';
 import { View } from '~pages/View';
-import { LoginService } from '~service/LoginService';
+import { LoginService } from '~service/loginService';
 
 function LoginRedirect(): JSX.Element {
     const { pathname } = useLocation();

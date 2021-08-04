@@ -2,7 +2,7 @@ import React, { Dispatch, SetStateAction, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import { Wrapper } from '~components/Wrapper';
 import { Feature, FeaturesConfig } from '~config/featuresConfig';
-import { LoginService } from '~service/LoginService';
+import { LoginService } from '~service/loginService';
 
 enum LoginAction {
     Login,
