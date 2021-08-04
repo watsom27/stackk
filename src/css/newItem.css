@@ -1,0 +1,16 @@
+
+div.new {
+    width: 65%;
+}
+
+div.new > input {
+    border: 0;
+    padding: 1rem;
+    width: 80%;
+    display: block;
+    background: rgb(255, 248, 248);
+}
+
+div.new > input:focus {
+    outline: none;
+}

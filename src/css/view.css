@@ -1,0 +1,22 @@
+div.title {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+div.logout-pad {
+    width: 2rem;
+    height: 2rem;
+    padding-right: 0.75rem;
+}
+
+div.logout {
+    cursor: pointer;
+    background-image: url('~img/logout.svg');
+    background-repeat: no-repeat;
+}
+
+    div.logout:hover {
+        background-image: url('~/img/logout-hovered.svg');
+    }

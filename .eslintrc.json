@@ -1,0 +1,93 @@
+{
+    "env": {
+        "browser": true,
+        "es2020": true,
+        "jest": true
+    },
+    "extends": [
+        "plugin:react/recommended",
+        "airbnb",
+        "plugin:@typescript-eslint/eslint-recommended",
+        "plugin:@typescript-eslint/recommended"
+    ],
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+        "ecmaFeatures": {
+            "jsx": true
+        },
+        "ecmaVersion": 6,
+        "sourceType": "module"
+    },
+    "plugins": [
+        "react",
+        "@typescript-eslint"
+    ],
+    "rules": {
+        "quotes": [
+            "error",
+            "single"
+        ],
+        "react/jsx-indent": [
+            "error",
+            4
+        ],
+        "react/jsx-filename-extension": "off",
+        "import/no-unresolved": "off",
+        "import/prefer-default-export": "off",
+        "import/extensions": "off",
+        "linebreak-style": "off",
+        "no-console": "error",
+        "react/jsx-indent-props": "off",
+        "jsx-quotes": [
+            "error",
+            "prefer-single"
+        ],
+        "jsx-a11y/control-has-associated-label": "off",
+        "jsx-a11y/click-events-have-key-events": "off",
+        "jsx-a11y/label-has-associated-control": "off",
+        "jsx-a11y/no-noninteractive-element-interactions": "off",
+        "no-param-reassign": "off",
+        "no-underscore-dangle": [
+            "error",
+            {
+                "allowAfterThis": true
+            }
+        ],
+        "import/no-extraneous-dependencies": "off",
+        "react/require-default-props": "off",
+        "max-len": "off",
+        "react/jsx-props-no-spreading": "off",
+        "@typescript-eslint/no-explicit-any": "off",
+        "prefer-object-spread": "off",
+        "indent": [
+            "error",
+            4,
+            {
+                "SwitchCase": 1
+            }
+        ],
+        "@typescript-eslint/no-unused-vars": [
+            "error",
+            "all"
+        ],
+        "object-curly-newline": "off",
+        "class-methods-use-this": "off",
+        "lines-between-class-members": [
+            "error",
+            "always",
+            {
+                "exceptAfterSingleLine": true
+            }
+        ],
+        "no-restricted-syntax": "off",
+        "@typescript-eslint/no-non-null-assertion": "off",
+        "jsx-a11y/tabindex-no-positive": "off",
+        "@typescript-eslint/ban-ts-comment": "warn",
+        "jsx-a11y/no-static-element-interactions": "off",
+        "jsx-a11y/no-autofocus": "off",
+        "react/prefer-stateless-function": "off",
+        "react/destructuring-assignment": "off",
+        "no-shadow": "off",
+        "no-useless-constructor": "off"
+    }
+}
