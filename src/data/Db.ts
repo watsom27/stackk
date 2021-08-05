@@ -125,18 +125,6 @@ class Db {
         this.persist();
     }
 
-    // Delete all the records stored for the currently logged in user
-    private async purge(): Promise<void> {
-        await firebase.firestore().collection(Collection.Items).where('userId', '==', LoginService.getUserId()).get()
-            .then((docs) => docs.forEach((doc) => doc.ref.delete()));
-
-        await firebase.firestore().collection(Collection.Orders).doc(LoginService.getUserId()).delete();
-
-        this.order = [];
-        this.itemCache.clear();
-        this.updateListeners.forEach((listener) => listener());
-    }
-
     private async persistDelete(item: Item): Promise<void> {
         const db = firebase.firestore();
 
