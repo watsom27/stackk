@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useState, KeyboardEvent } from 'react';
+import React, { Dispatch, SetStateAction, useState, KeyboardEvent, useEffect } from 'react';
 import { db } from '~data/Db';
 import { Item } from '~data/Item';
 
@@ -10,9 +10,14 @@ export function NewItem({ setItems }: NewItemProps): JSX.Element {
     const [value, setValue] = useState<string>('');
     const [isReadOnly, setReadOnly] = useState<boolean>(false);
 
+    const setItemsFromDb = () => setItems(db.getItems());
+
+    useEffect(() => db.addUpdateListener(setItemsFromDb), []);
+
     const btnAddOnClick = async () => {
-        await db.add(value);
-        setItems(await db.getItems());
+        const newItem = Item.New(value);
+        db.add(newItem);
+        setItemsFromDb();
         setValue('');
         setReadOnly(false);
     };
@@ -38,7 +43,7 @@ export function NewItem({ setItems }: NewItemProps): JSX.Element {
                 className='done'
                 type='button'
                 onClick={btnAddOnClick}
-                disabled={!isReadOnly}
+                disabled={isReadOnly}
             >
                 Add
             </button>

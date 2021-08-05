@@ -13,10 +13,12 @@ export function View(): JSX.Element {
     const toComponent = (item: Item) => <ItemComponent key={item.id} item={item} setItems={setItems} />;
 
     useEffect(() => {
-        db.getItems().then((t) => {
-            setItems(t);
-            setLoaded(true);
-        });
+        if (!db.isLoaded()) {
+            db.load().then(() => {
+                setLoaded(true);
+                setItems(db.getItems());
+            });
+        }
     }, []);
 
     const first = items[0];
