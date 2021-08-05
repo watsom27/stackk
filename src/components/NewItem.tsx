@@ -38,6 +38,7 @@ export function NewItem({ setItems }: NewItemProps): JSX.Element {
                 className='done'
                 type='button'
                 onClick={btnAddOnClick}
+                disabled={!isReadOnly}
             >
                 Add
             </button>
