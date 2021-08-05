@@ -91,7 +91,7 @@ export function Login(): JSX.Element {
                 <div className='login-page-wrapper'>
                     <div className='login-backdrop'>
                         <Title action={action} />
-                        <h4>Username</h4>
+                        <h4>Email</h4>
                         <input
                             type='email'
                             value={username}
