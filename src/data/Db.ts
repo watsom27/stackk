@@ -37,7 +37,7 @@ class Db {
         const order = await this.getOrder();
         const index = order.indexOf(item.id);
 
-        if (index > 1) {
+        if (index > 0) {
             const temp = order[index - 1];
             order[index - 1] = order[index];
             order[index] = temp;

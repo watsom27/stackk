@@ -9,8 +9,6 @@ interface ItemComponentProps {
 }
 
 function Controls({ item, isFirst, setItems }: ItemComponentProps): JSX.Element {
-    let result: JSX.Element;
-
     const btnDoneOnClick = async () => {
         await db.delete(item);
         setItems(await db.getItems());
@@ -26,42 +24,30 @@ function Controls({ item, isFirst, setItems }: ItemComponentProps): JSX.Element 
         setItems(await db.getItems());
     };
 
-    if (isFirst) {
-        result = (
+    const completeButtonText = isFirst ? 'Done' : 'Delete';
+
+    return (
+        <div className='controls'>
+            <div className='bump'>
+                <button
+                    className='btn-bump'
+                    onClick={btnBumpOnClick}
+                    type='button'
+                />
+                <button
+                    className='btn-bumpnt'
+                    onClick={btnBumpntOnClick}
+                    type='button'
+                />
+            </div>
             <button
-                className='done'
                 onClick={btnDoneOnClick}
                 type='button'
             >
-                Done
+                {completeButtonText}
             </button>
-        );
-    } else {
-        result = (
-            <div className='controls'>
-                <div className='bump'>
-                    <button
-                        className='btn-bump'
-                        onClick={btnBumpOnClick}
-                        type='button'
-                    />
-                    <button
-                        className='btn-bumpnt'
-                        onClick={btnBumpntOnClick}
-                        type='button'
-                    />
-                </div>
-                <button
-                    onClick={btnDoneOnClick}
-                    type='button'
-                >
-                    Delete
-                </button>
-            </div>
-        );
-    }
-
-    return result;
+        </div>
+    );
 }
 
 export function ItemComponent({ item, isFirst, setItems }: ItemComponentProps): JSX.Element {
