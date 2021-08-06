@@ -17,24 +17,69 @@ enum Collection {
     Orders = 'orders',
 }
 
+export enum Message {
+    Add,
+}
+
+type DbUpdateListener = () => void;
+type Unsubscribe = () => void;
+
 class Db {
-    private cache = new Map<string, Item>();
-    private orderCache = new Map<string, string[]>();
+    private updateListeners: DbUpdateListener[] = [];
+    private itemCache = new Map<string, Item>();
+    private order: string[] = [];
+    private transactionNumber = 0;
+    private loaded = false;
 
-    public async delete(item: Item): Promise<void> {
-        const db = firebase.firestore();
-
-        const deletePromise = db.collection(Collection.Items).doc(item.id).delete();
-        const order = await this.getOrder();
-        const newOrder = order.filter((id) => id !== item.id);
-
-        const setOrderPromise = this.setOrder(newOrder);
-
-        await Promise.all([deletePromise, setOrderPromise]);
+    public isLoaded(): boolean {
+        return this.loaded;
     }
 
-    public async bump(item: Item): Promise<void> {
-        const order = await this.getOrder();
+    public async load(): Promise<void> {
+        const db = firebase.firestore();
+        const userId = LoginService.getUserId();
+
+        const orderData = await db.collection(Collection.Orders).doc(userId).get();
+
+        if (orderData.exists) {
+            this.order = (orderData.data() as DbOrder).items;
+        }
+
+        const itemPromises = [];
+
+        for (const itemId of this.order) {
+            itemPromises.push(db.collection(Collection.Items).doc(itemId).get());
+        }
+
+        const allItems = await Promise.all(itemPromises);
+
+        for (const itemDoc of allItems) {
+            if (itemDoc.exists) {
+                const { userId, value } = itemDoc.data() as DbItem;
+                const item = new Item(userId, value, itemDoc.id);
+
+                this.itemCache.set(itemDoc.id, item);
+            }
+        }
+    }
+
+    public addUpdateListener(listener: DbUpdateListener): Unsubscribe {
+        this.updateListeners.push(listener);
+
+        return () => {
+            this.updateListeners = this.updateListeners.filter((l) => l !== listener);
+        };
+    }
+
+    public delete(item: Item): void {
+        this.order = this.order.filter((id) => id !== item.id);
+
+        this.persistDelete(item);
+        this.persist();
+    }
+
+    public bump(item: Item): void {
+        const { order } = this;
         const index = order.indexOf(item.id);
 
         if (index > 0) {
@@ -42,12 +87,12 @@ class Db {
             order[index - 1] = order[index];
             order[index] = temp;
 
-            await this.setOrder(order);
+            this.persist();
         }
     }
 
-    public async bumpnt(item: Item): Promise<void> {
-        const order = await this.getOrder();
+    public bumpnt(item: Item): void {
+        const { order } = this;
         const index = order.indexOf(item.id);
 
         if (index < order.length - 1) {
@@ -55,97 +100,65 @@ class Db {
             order[index + 1] = order[index];
             order[index] = temp;
 
-            await this.setOrder(order);
+            this.persist();
         }
     }
 
-    public async getItems(): Promise<Item[]> {
-        const itemIds = await this.getOrder();
-        const itemPromises: Array<Promise<Item>> = [];
+    public getItems(): Item[] {
+        const result: Item[] = [];
 
-        for (const itemId of itemIds) {
-            itemPromises.push(this.getById(itemId));
-        }
-
-        return Promise.all(itemPromises);
-    }
-
-    public async add(value: string): Promise<void> {
-        const db = firebase.firestore();
-
-        const item: DbItem = {
-            userId: LoginService.getUserId(),
-            value,
-        };
-
-        const newItem = await db.collection(Collection.Items).add(item);
-        const newId = newItem.id;
-
-        const order = await this.getOrder();
-        const newOrder = [...order, newId];
-
-        await this.setOrder(newOrder);
-    }
-
-    private async getOrder(): Promise<string[]> {
-        let result: string[];
-        const userId = LoginService.getUserId();
-
-        const db = firebase.firestore();
-
-        if (this.orderCache.has(userId)) {
-            result = this.orderCache.get(userId)!;
-        } else {
-            const orderDocument = await db.collection(Collection.Orders).doc(userId).get();
-
-            if (orderDocument.exists) {
-                const { items } = orderDocument.data() as DbOrder;
-
-                result = items;
-            } else {
-                result = [];
-            }
-        }
-
-        return result;
-    }
-
-    private async setOrder(order: string[]): Promise<void> {
-        const userId = LoginService.getUserId();
-        const db = firebase.firestore();
-
-        const newOrder: DbOrder = {
-            items: order,
-        };
-
-        await db.collection(Collection.Orders).doc(userId).set(newOrder);
-
-        this.orderCache.clear();
-    }
-
-    private async getById(id: string): Promise<Item> {
-        let result: Item;
-
-        if (this.cache.has(id)) {
-            result = this.cache.get(id)!;
-        } else {
-            const db = firebase.firestore();
-
-            const itemDocument = await db.collection(Collection.Items).doc(id).get();
-            const item = itemDocument.data();
+        for (const itemId of this.order) {
+            const item = this.itemCache.get(itemId);
 
             if (item) {
-                const { userId, value } = item as DbItem;
-
-                result = new Item(userId, value, id);
-
-                this.cache.set(id, result);
-            } else {
-                throw new Error(`Item with id ${id} does not exist`);
+                result.push(item);
             }
         }
 
         return result;
+    }
+
+    public add(item: Item): void {
+        this.itemCache.set(item.id, item);
+        this.order.push(item.id);
+
+        this.persist();
+    }
+
+    private async persistDelete(item: Item): Promise<void> {
+        const db = firebase.firestore();
+
+        await db.collection(Collection.Items).doc(item.id).delete();
+    }
+
+    private async persist(): Promise<void> {
+        this.transactionNumber += 1;
+        const startVersion = this.transactionNumber;
+
+        const userId = LoginService.getUserId();
+        const db = firebase.firestore();
+
+        const orderPromise = db.collection(Collection.Orders).doc(userId).set({ items: this.order });
+        const allPromises = [orderPromise];
+
+        for (const itemId of this.order) {
+            const item = this.itemCache.get(itemId);
+
+            if (item) {
+                const newItem: DbItem = {
+                    userId,
+                    value: item.value,
+                };
+
+                allPromises.push(db.collection(Collection.Items).doc(item.id).set(newItem));
+            }
+        }
+
+        await Promise.all(allPromises);
+
+        if (startVersion === this.transactionNumber) {
+            this.updateListeners.forEach((listener) => listener());
+        }
     }
 }
 

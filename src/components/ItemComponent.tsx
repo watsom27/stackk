@@ -10,18 +10,18 @@ interface ItemComponentProps {
 
 function Controls({ item, isFirst, setItems }: ItemComponentProps): JSX.Element {
     const btnDoneOnClick = async () => {
-        await db.delete(item);
-        setItems(await db.getItems());
+        db.delete(item);
+        setItems(db.getItems());
     };
 
     const btnBumpOnClick = async () => {
-        await db.bump(item);
-        setItems(await db.getItems());
+        db.bump(item);
+        setItems(db.getItems());
     };
 
     const btnBumpntOnClick = async () => {
-        await db.bumpnt(item);
-        setItems(await db.getItems());
+        db.bumpnt(item);
+        setItems(db.getItems());
     };
 
     const completeButtonText = isFirst ? 'Done' : 'Delete';
