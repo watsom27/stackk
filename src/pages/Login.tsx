@@ -61,6 +61,13 @@ function LoginRegisterButtons({ action, setAction, username, password, setError 
             <>
                 <button type='submit' onClick={btnRegisterOnClick}>Register</button>
                 <button type='button' onClick={btnLoginOnClick}>Already Registered? Login</button>
+                <p>
+                    <i>
+                        Email can be any valid email.
+                        <br />
+                        Password must be over 6 letters.
+                    </i>
+                </p>
             </>
         );
     }
