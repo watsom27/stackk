@@ -14,17 +14,21 @@ export function NewItem({ setItems }: NewItemProps): JSX.Element {
 
     useEffect(() => db.addUpdateListener(setItemsFromDb), []);
 
-    const btnAddOnClick = async () => {
-        const newItem = Item.New(value);
-        db.add(newItem);
-        setItemsFromDb();
-        setValue('');
+    const btnAddOnClick = () => {
+        setReadOnly(true);
+
+        if (value.length) {
+            const newItem = Item.New(value);
+            db.add(newItem);
+            setItemsFromDb();
+            setValue('');
+        }
+
         setReadOnly(false);
     };
 
     const onKeyPress = (event: KeyboardEvent<HTMLInputElement>) => {
         if (event.key === 'Enter') {
-            setReadOnly(true);
             btnAddOnClick();
         }
     };
