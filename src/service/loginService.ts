@@ -60,8 +60,8 @@ export class LoginService {
         db.signOut();
     }
 
-    public static sendResetEmail(): void {
-        firebase.auth().sendPasswordResetEmail(this.getUserEmail());
+    public static async sendResetEmail(email = this.getUserEmail()): Promise<void> {
+        await firebase.auth().sendPasswordResetEmail(email);
     }
 
     public static async deleteAccount(): Promise<void> {
