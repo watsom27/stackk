@@ -125,6 +125,27 @@ class Db {
         this.persist();
     }
 
+    public async deleteForUser(): Promise<void> {
+        const db = firebase.firestore();
+
+        await this.load();
+
+        const itemPromises: Array<Promise<void>> = [];
+
+        for (const itemId of this.order) {
+            itemPromises.push(db.collection(Collection.Items).doc(itemId).delete());
+        }
+
+        await Promise.all(itemPromises);
+        await db.collection(Collection.Orders).doc(LoginService.getUserId()).delete();
+    }
+
+    public signOut(): void {
+        this.order = [];
+        this.itemCache.clear();
+        this.loaded = false;
+    }
+
     private async persistDelete(item: Item): Promise<void> {
         const db = firebase.firestore();
 

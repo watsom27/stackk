@@ -1,0 +1,52 @@
+div.settings-wrapper {
+    z-index: 100;
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+}
+
+    .settings-wrapper > .settings-backdrop {
+        background: #F8F8F8;
+        width: 20rem;
+        margin: 4.5rem;
+        animation-name: open;
+        animation-duration: 0.05s;
+        height: 10rem;
+        border-radius: 10px;
+        box-shadow: 0 0.3rem 0.625rem 0.05rem grey;
+        padding: 1rem;
+        display: flex;
+        flex-direction: column;
+        align-content: center;
+        justify-content: space-between;
+        align-items: center;
+        text-align: left;
+    }
+
+        .settings-backdrop > .content-wrapper {
+            text-align: left;
+            width: 100%;
+            padding: 0 3rem;
+        }
+
+            .content-wrapper >.title-wrapper {
+                text-align: center;
+                width: 100%;
+                margin-bottom: 1rem;
+            }
+
+                .title-wrapper > h4 {
+                    margin: 0;
+                }
+
+    @keyframes open {
+        from {
+            height: 0;
+        }
+
+        to {
+            height: 10rem;
+        }
+    }

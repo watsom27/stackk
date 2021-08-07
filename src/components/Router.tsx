@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { BrowserRouter, Redirect, Route, Switch, useLocation } from 'react-router-dom';
+import { Account } from '~pages/Account';
 import { Login } from '~pages/Login';
 import { NotFound } from '~pages/NotFound';
 import { View } from '~pages/View';
@@ -45,6 +46,10 @@ export function Router(): JSX.Element {
 
                     <Route path='/login'>
                         <Login />
+                    </Route>
+
+                    <Route path='/account'>
+                        <Account />
                     </Route>
 
                     <Route exact path='/'>

@@ -1,0 +1,11 @@
+div.return-icon {
+    cursor: pointer;
+    background-image: url('~img/left.svg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+    div.return-icon:hover {
+        background-image: url('~/img/left-hovered.svg');
+    }

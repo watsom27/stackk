@@ -1,14 +1,12 @@
 import React, { PropsWithChildren, useEffect } from 'react';
-import { Logout } from '~components/Logout';
 
 interface WrapperProps {
     title?: string;
-    showLogout?: boolean;
 }
 
 const TITLE_SUFFIX = 'Stackk';
 
-export function Wrapper({ title, showLogout, children }: PropsWithChildren<WrapperProps>): JSX.Element {
+export function Wrapper({ title, children }: PropsWithChildren<WrapperProps>): JSX.Element {
     useEffect(() => {
         document.title = title
             ? `${title} - ${TITLE_SUFFIX}`
@@ -20,7 +18,6 @@ export function Wrapper({ title, showLogout, children }: PropsWithChildren<Wrapp
     return (
         <>
             <div className='wrapper'>
-                {showLogout && <Logout />}
                 {children}
             </div>
         </>

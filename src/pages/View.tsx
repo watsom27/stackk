@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { ItemComponent } from '~components/ItemComponent';
-import { Logout } from '~components/Logout';
 import { NewItem } from '~components/NewItem';
+import { Title } from '~components/Title';
 import { Wrapper } from '~components/Wrapper';
 import { db } from '~data/Db';
 import { Item } from '~data/Item';
@@ -27,11 +27,7 @@ export function View(): JSX.Element {
 
     return (
         <Wrapper title='View'>
-            <div className='title'>
-                <div className='logout-pad' />
-                <h3>Things To Do</h3>
-                <Logout />
-            </div>
+            <Title title='Things To Do' />
             {first && <ItemComponent item={first} isFirst setItems={setItems} />}
             {thing.map(toComponent)}
             {loaded && <NewItem setItems={setItems} />}

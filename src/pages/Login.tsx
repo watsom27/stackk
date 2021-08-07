@@ -86,6 +86,7 @@ export function Login(): JSX.Element {
     const [password, setPassword] = useState<string>('');
     const [action, setAction] = useState<LoginAction>(LoginAction.Login);
     const [error, setError] = useState<string>();
+    const message = new URLSearchParams(useLocation().search).get('message');
     const history = useHistory();
 
     if (LoginService.isLoggedIn()) {
@@ -124,6 +125,7 @@ export function Login(): JSX.Element {
                             password={password}
                             setError={setError}
                         />
+                        {message && <p>{message}</p>}
                     </div>
                 </div>
             </form>

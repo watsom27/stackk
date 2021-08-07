@@ -8,15 +8,28 @@ div.title {
 div.logout-pad {
     width: 2rem;
     height: 2rem;
-    padding-right: 0.75rem;
+    margin: 0 0.8rem;
 }
 
 div.logout {
     cursor: pointer;
     background-image: url('~img/logout.svg');
+    background-position: center;
     background-repeat: no-repeat;
 }
 
     div.logout:hover {
         background-image: url('~/img/logout-hovered.svg');
+    }
+
+div.settings-icon {
+    cursor: pointer;
+    background-image: url('~img/cog.svg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+    div.settings-icon:hover {
+        background-image: url('~/img/cog-hovered.svg');
     }
