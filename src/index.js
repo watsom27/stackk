@@ -1,17 +1,15 @@
 import firebase from 'firebase/app';
+import 'firebase/firestore';
 import React from 'react';
 import { render } from 'react-dom';
 import { Router } from '~components/Router';
 
-const firebaseConfig = {
-    apiKey: 'AIzaSyBP5Uj89yU10siuLdzfB4DnOnF4F7IPehQ',
-    authDomain: 'stackk.firebaseapp.com',
-    projectId: 'stackk',
-    storageBucket: 'stackk.appspot.com',
-    messagingSenderId: '776436969975',
-    appId: '1:776436969975:web:1eddcfe1be593124fdfef2',
-};
+const config = JSON.parse(process.env.DB);
 
-firebase.initializeApp(firebaseConfig);
+firebase.initializeApp(config);
+
+if (process.env.NODE_ENV !== 'production') {
+    firebase.firestore().useEmulator('localhost', 8080);
+}
 
 render(<Router />, document.getElementById('root'));
