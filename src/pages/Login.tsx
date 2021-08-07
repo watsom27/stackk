@@ -133,7 +133,6 @@ export function Login(): JSX.Element {
                             placeholder='Password'
                             autoComplete='current-password'
                         />
-                        {error && <p className='error'>{error}</p>}
                         <LoginRegisterButtons
                             action={action}
                             setAction={setAction}
@@ -144,6 +143,7 @@ export function Login(): JSX.Element {
                         />
                         {incorrectCount >= 2 && action === LoginAction.Login && <ResetPasswordButton />}
                         {message && <p>{message}</p>}
+                        {error && <p className='error'>{error}</p>}
                     </div>
                 </div>
             </form>
