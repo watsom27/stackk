@@ -144,7 +144,6 @@ class Db {
         this.persist();
     }
 
-    // TODO Cookies
     public setViewMode(mode: ViewMode): void {
         this.viewMode = mode;
         this.callUpdateListeners();
