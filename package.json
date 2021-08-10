@@ -11,7 +11,7 @@
     "start:dev:win": "parcel src/index.html",
     "build": "npm run nukedist && tsc --noEmit && parcel build src/index.html --no-source-maps",
     "build:win": "tsc --noEmit && parcel build src/index.html --no-source-maps",
-    "deploy:test": "npm run build && firebase hosting:channel:deploy test --expires 1d",
+    "deploy:test": "npm run build && firebase hosting:channel:deploy test --expires 30d",
     "start:db": "firebase emulators:start --only firestore --import=./localdbdata --export-on-exit"
   },
   "author": "michael.watson99@icloud.com",

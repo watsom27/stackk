@@ -3,9 +3,19 @@ import 'firebase/firestore';
 import { Item } from '~data/Item';
 import { LoginService } from '~service/loginService';
 
+export enum ViewMode {
+    Work,
+    Home,
+}
+
 export interface DbItem {
     userId: string;
     value: string;
+    mode: ViewMode;
+}
+
+interface DbViewMode {
+    value: ViewMode;
 }
 
 interface DbOrder {
@@ -15,10 +25,7 @@ interface DbOrder {
 enum Collection {
     Items = 'items',
     Orders = 'orders',
-}
-
-export enum Message {
-    Add,
+    ViewMode = 'viewmode',
 }
 
 type DbUpdateListener = () => void;
@@ -30,6 +37,7 @@ class Db {
     private order: string[] = [];
     private transactionNumber = 0;
     private loaded = false;
+    private viewMode: ViewMode = ViewMode.Work;
 
     public isLoaded(): boolean {
         return this.loaded;
@@ -39,7 +47,16 @@ class Db {
         const db = firebase.firestore();
         const userId = LoginService.getUserId();
 
-        const orderData = await db.collection(Collection.Orders).doc(userId).get();
+        const [viewMode, orderData] = await Promise.all(
+            [
+                db.collection(Collection.ViewMode).doc(userId).get(),
+                db.collection(Collection.Orders).doc(userId).get(),
+            ],
+        );
+
+        if (viewMode.exists) {
+            this.viewMode = (viewMode.data() as DbViewMode).value;
+        }
 
         if (orderData.exists) {
             this.order = (orderData.data() as DbOrder).items;
@@ -55,12 +72,14 @@ class Db {
 
         for (const itemDoc of allItems) {
             if (itemDoc.exists) {
-                const { userId, value } = itemDoc.data() as DbItem;
-                const item = new Item(userId, value, itemDoc.id);
+                const { userId, value, mode } = itemDoc.data() as DbItem;
+                const item = new Item(userId, value, itemDoc.id, mode);
 
                 this.itemCache.set(itemDoc.id, item);
             }
         }
+
+        this.loaded = true;
     }
 
     public addUpdateListener(listener: DbUpdateListener): Unsubscribe {
@@ -110,7 +129,7 @@ class Db {
         for (const itemId of this.order) {
             const item = this.itemCache.get(itemId);
 
-            if (item) {
+            if (item && item.viewMode === this.viewMode) {
                 result.push(item);
             }
         }
@@ -123,6 +142,16 @@ class Db {
         this.order.push(item.id);
 
         this.persist();
+    }
+
+    public setViewMode(mode: ViewMode): void {
+        this.viewMode = mode;
+        this.callUpdateListeners();
+        this.persistViewMode();
+    }
+
+    public getViewMode(): ViewMode {
+        return this.viewMode;
     }
 
     public async deleteForUser(): Promise<void> {
@@ -144,6 +173,20 @@ class Db {
         this.order = [];
         this.itemCache.clear();
         this.loaded = false;
+    }
+
+    private callUpdateListeners(): void {
+        this.updateListeners.forEach((listener) => listener());
+    }
+
+    private async persistViewMode(): Promise<void> {
+        const db = firebase.firestore();
+        const userId = LoginService.getUserId();
+        const newValue: DbViewMode = {
+            value: this.viewMode,
+        };
+
+        await db.collection(Collection.ViewMode).doc(userId).set(newValue);
     }
 
     private async persistDelete(item: Item): Promise<void> {
@@ -169,6 +212,7 @@ class Db {
                 const newItem: DbItem = {
                     userId,
                     value: item.value,
+                    mode: item.viewMode,
                 };
 
                 allPromises.push(db.collection(Collection.Items).doc(item.id).set(newItem));
@@ -178,7 +222,7 @@ class Db {
         await Promise.all(allPromises);
 
         if (startVersion === this.transactionNumber) {
-            this.updateListeners.forEach((listener) => listener());
+            this.callUpdateListeners();
         }
     }
 }
