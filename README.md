@@ -2,6 +2,8 @@
 Small lil stack app
 
 ## Developing
+Ask me for db credentials, this is needed to login.
+
 To develop locally you will need to boot up the devdb:
 
     npm run start:db
