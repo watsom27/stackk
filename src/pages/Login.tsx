@@ -15,9 +15,23 @@ interface LoginRegisterButtonsProps {
     username: string;
     password: string;
     setError: Dispatch<SetStateAction<string | undefined>>;
+    bumpIncorrectCount: () => void;
 }
 
-function LoginRegisterButtons({ action, setAction, username, password, setError }: LoginRegisterButtonsProps): JSX.Element {
+function ResetPasswordButton(): JSX.Element {
+    const history = useHistory();
+
+    return (
+        <button
+            onClick={() => history.push('/reset')}
+            type='button'
+        >
+            Forgot Password
+        </button>
+    );
+}
+
+function LoginRegisterButtons({ action, setAction, username, password, setError, bumpIncorrectCount }: LoginRegisterButtonsProps): JSX.Element {
     let content: JSX.Element;
     const history = useHistory();
     const returnAddr = new URLSearchParams(useLocation().search).get('returnAddr');
@@ -30,6 +44,7 @@ function LoginRegisterButtons({ action, setAction, username, password, setError 
             if (await LoginService.validateUser(username, password)) {
                 history.push(successRedirect);
             } else {
+                bumpIncorrectCount();
                 setError('Invalid username or password, try again.');
             }
         };
@@ -86,6 +101,8 @@ export function Login(): JSX.Element {
     const [password, setPassword] = useState<string>('');
     const [action, setAction] = useState<LoginAction>(LoginAction.Login);
     const [error, setError] = useState<string>();
+    const [incorrectCount, setIncorrectCount] = useState<number>(0);
+    const message = new URLSearchParams(useLocation().search).get('message');
     const history = useHistory();
 
     if (LoginService.isLoggedIn()) {
@@ -116,14 +133,17 @@ export function Login(): JSX.Element {
                             placeholder='Password'
                             autoComplete='current-password'
                         />
-                        {error && <p className='error'>{error}</p>}
                         <LoginRegisterButtons
                             action={action}
                             setAction={setAction}
                             username={username}
                             password={password}
                             setError={setError}
+                            bumpIncorrectCount={() => setIncorrectCount(incorrectCount + 1)}
                         />
+                        {incorrectCount >= 2 && action === LoginAction.Login && <ResetPasswordButton />}
+                        {message && <p>{message}</p>}
+                        {error && <p className='error'>{error}</p>}
                     </div>
                 </div>
             </form>

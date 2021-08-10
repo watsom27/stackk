@@ -1,0 +1,16 @@
+div > .account-content {
+    padding: 1rem;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+    .account-content > h4 {
+        margin: 0.3rem;
+    }
+
+    .account-content button {
+        width: 15rem;
+        margin: 0.125rem;
+    }

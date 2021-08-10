@@ -1,6 +1,7 @@
 import firebase from 'firebase/app';
 import 'firebase/auth';
 import { Feature, FeaturesConfig } from '~config/featuresConfig';
+import { db } from '~data/Db';
 import { Logger } from '~service/logger';
 
 interface LoginResponse {
@@ -56,6 +57,45 @@ export class LoginService {
 
     public static logout(): void {
         firebase.auth().signOut();
+        db.signOut();
+    }
+
+    public static async sendResetEmail(email = this.getUserEmail()): Promise<void> {
+        await firebase.auth().sendPasswordResetEmail(email);
+    }
+
+    public static async deleteAccount(): Promise<void> {
+        await firebase.auth().currentUser?.delete();
+        db.signOut();
+    }
+
+    public static async reAuth(password: string): Promise<LoginResponse> {
+        let result: LoginResponse;
+
+        try {
+            const authCredential = await firebase.auth.EmailAuthProvider.credential(this.getUserEmail(), password);
+
+            if (authCredential) {
+                await firebase.auth().currentUser?.reauthenticateWithCredential(authCredential);
+                result = {
+                    success: true,
+                };
+            } else {
+                result = {
+                    success: false,
+                    reason: 'Something shit itself',
+                };
+            }
+        } catch (e) {
+            result = {
+                success: false,
+                reason: e.message,
+            };
+
+            Logger.log(e.message);
+        }
+
+        return result;
     }
 
     public static isLoggedIn(): boolean {
@@ -70,5 +110,15 @@ export class LoginService {
         }
 
         return uId;
+    }
+
+    public static getUserEmail(): string {
+        const email = firebase.auth().currentUser?.email;
+
+        if (!email) {
+            throw new Error('Tried to read email when not logged in');
+        }
+
+        return email;
     }
 }

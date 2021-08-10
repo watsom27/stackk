@@ -1,0 +1,26 @@
+input.email {
+    width: 15rem;
+    margin: 0.125rem;
+    height: 1.250rem;
+    margin-bottom: 0.75rem;
+    box-sizing: border-box;
+    height: 2rem;
+}
+
+button.request {
+    width: 15rem;
+}
+
+form.reset {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.reset-title-wrapper {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}

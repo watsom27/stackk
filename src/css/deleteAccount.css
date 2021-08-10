@@ -1,0 +1,18 @@
+input.confirm-password {
+    width: 15rem;
+    margin: 0.125rem;
+    box-sizing: border-box;
+    height: 2.2rem;
+    animation-name: open;
+    animation-duration: 0.25s;
+}
+
+@keyframes open {
+    from {
+        height: 0;
+    }
+
+    to {
+        height: 2.2rem;
+    }
+}

@@ -38,8 +38,40 @@ button {
         background-color: rgb(255, 143, 143);
     }
 
+button.link {
+    display: inline;
+    background: none;
+    border: none;
+    font-size: 11pt;
+    text-align: left;
+    width: auto;
+}
+
+    button.link:hover {
+        text-decoration: underline;
+    }
+
+button.disabled {
+    background: rgb(170, 170, 170);
+    cursor: initial;
+}
+
+a.link {
+    color: black;
+    text-decoration: none;
+}
+
+    a.link:hover {
+        text-decoration: underline;
+    }
+
 @import './wrapper.css';
 @import './itemComponent.css';
 @import './newItem.css';
 @import './login.css';
-@import './view.css';
+@import './title.css';
+@import './settings.css';
+@import './account.css';
+@import './deleteAccount.css';
+@import './return.css';
+@import './reset.css';
