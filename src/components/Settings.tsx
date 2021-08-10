@@ -17,8 +17,8 @@ export function Settings(): JSX.Element {
     };
 
     return (
-        <div className='settings-wrapper'>
-            <div className='settings-backdrop'>
+        <div className='settings-wrapper' onClick={() => showSettingsService.hide()}>
+            <div className='settings-backdrop' onClick={(e) => e.stopPropagation()}>
                 <div className='content-wrapper'>
                     <div className='title-wrapper'>
                         <h4>Stackk Settings</h4>

@@ -12,7 +12,7 @@ div.settings-wrapper {
         width: 20rem;
         margin: 4.5rem;
         animation-name: open;
-        animation-duration: 0.05s;
+        animation-duration: 0.005s;
         height: 10rem;
         border-radius: 10px;
         box-shadow: 0 0.3rem 0.625rem 0.05rem grey;
