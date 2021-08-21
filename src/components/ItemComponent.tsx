@@ -1,6 +1,6 @@
 import React, { Dispatch, SetStateAction } from 'react';
 import { Item } from '~data/Item';
-import { ItemControls } from './ItemControls';
+import { ItemControls } from '~components/ItemControls';
 
 interface ItemComponentProps {
     item: Item;
