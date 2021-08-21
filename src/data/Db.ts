@@ -97,6 +97,23 @@ class Db {
         this.persist();
     }
 
+    public superBump(item: Item): void {
+        const { order } = this;
+        let index = order.indexOf(item.id);
+
+        if (index > 0) {
+            while (index > 0) {
+                const temp = order[index - 1];
+                order[index - 1] = order[index];
+                order[index] = temp;
+
+                index -= 1;
+            }
+
+            this.persist();
+        }
+    }
+
     public bump(item: Item): void {
         const { order } = this;
         const index = order.indexOf(item.id);

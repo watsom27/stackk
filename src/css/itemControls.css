@@ -1,0 +1,37 @@
+div.controls {
+    display: flex;
+}
+    div.controls button {
+        padding: 0.125rem;
+        width: 3rem;
+    }
+
+    .controls > .bump {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .controls > .bump > button {
+        width: 2.5rem;
+        height: 1rem;
+        background-size: 0.5rem;
+        background-repeat: no-repeat;
+        background-position: center;
+    }
+
+        button.btn-bump {
+            background-image: url('~\img\up.svg');
+        }
+
+        button.btn-bumpnt {
+            background-image: url('~\img\down.svg');
+        }
+
+    div.controls > button.btn-superbump {
+        width: 1.5rem;
+        height: 2rem;
+        background-size: 0.8rem;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-image: url('~\img\upup.svg');
+    }
