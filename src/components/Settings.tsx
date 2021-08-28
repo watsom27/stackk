@@ -42,6 +42,13 @@ export function Settings(): JSX.Element {
                     >
                         My Account
                     </a>
+                    <br />
+                    <a
+                        href={URLs.release}
+                        className='link'
+                    >
+                        Release Notes
+                    </a>
                 </div>
                 {loaded && (
                     <button
