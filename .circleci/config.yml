@@ -45,10 +45,17 @@ workflows:
                         only: /[Vv]([0-9]{1,2}\.){2}[0-9]+/
                   branches:
                         ignore: /.*/
+      - approve-deploy:
+            type: approval
+            filters:
+                  tags:
+                        only: /[Vv]([0-9]{1,2}\.){2}[0-9]+/
+                  branches:
+                        ignore: /.*/
       - deploy_prod:
             requires:
                   - lint_only
-
+                  - approve-deploy
             filters:
                   tags:
                         only: /[Vv]([0-9]{1,2}\.){2}[0-9]+/
