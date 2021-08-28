@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { BrowserRouter, Redirect, Route, Switch, useLocation } from 'react-router-dom';
+import { URLs } from '~config/URLs';
 import { Account } from '~pages/Account';
 import { Login } from '~pages/Login';
 import { NotFound } from '~pages/NotFound';
@@ -7,7 +8,7 @@ import { Reset } from '~pages/Reset';
 import { View } from '~pages/View';
 import { LoginService } from '~service/loginService';
 
-const OPEN_URLS = ['/login', '/reset'];
+const OPEN_URLS: string[] = [URLs.login, URLs.reset];
 
 function LoginRedirect(): JSX.Element {
     const { pathname } = useLocation();
@@ -15,13 +16,12 @@ function LoginRedirect(): JSX.Element {
     let content = <></>;
 
     if (!LoginService.isLoggedIn() && !OPEN_URLS.includes(pathname)) {
-        const returnAddr = pathname !== '/login'
+        const returnAddr = pathname !== URLs.login
             ? pathname
             : undefined;
 
         const redirectLink = returnAddr
-            ? `/login?returnAddr=${returnAddr}`
-            : '/login';
+            : URLs.login;
 
         content = <Redirect to={redirectLink} />;
     }
@@ -43,24 +43,24 @@ export function Router(): JSX.Element {
             <BrowserRouter>
                 <LoginRedirect />
                 <Switch>
-                    <Route path='/view'>
+                    <Route path={URLs.view}>
                         <View />
                     </Route>
 
-                    <Route path='/login'>
+                    <Route path={URLs.login}>
                         <Login />
                     </Route>
 
-                    <Route path='/account'>
+                    <Route path={URLs.account}>
                         <Account />
                     </Route>
 
-                    <Route path='/reset'>
+                    <Route path={URLs.reset}>
                         <Reset />
                     </Route>
 
                     <Route exact path='/'>
-                        <Redirect to='/view' />
+                        <Redirect to={URLs.view} />
                     </Route>
 
                     <NotFound />

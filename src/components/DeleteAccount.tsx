@@ -1,5 +1,6 @@
 import React, { useState, useEffect, KeyboardEvent } from 'react';
 import { useHistory } from 'react-router-dom';
+import { URLs } from '~config/URLs';
 import { db } from '~data/Db';
 import { LoginService } from '~service/loginService';
 
@@ -43,7 +44,7 @@ export function DeleteAccount(): JSX.Element {
                 await db.deleteForUser();
                 await LoginService.deleteAccount();
 
-                history.push('/login?message=Thank you for using Stackk. Your account has been deleted');
+                history.push(`${URLs.login}?message=Thank you for using Stackk. Your account has been deleted`);
             } else {
                 setError(passwordResult.reason);
                 setWorking(false);

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { showSettingsService } from '~service/showSettingsService';
 import { Toggle } from '~components/Toggle';
 import { db, ViewMode } from '~data/Db';
+import { URLs } from '~config/URLs';
 
 export function Settings(): JSX.Element {
     const [loaded, setLoaded] = useState<boolean>(false);
@@ -36,7 +37,7 @@ export function Settings(): JSX.Element {
                     </div>
                     <hr />
                     <a
-                        href='/account'
+                        href={URLs.account}
                         className='link'
                     >
                         My Account
