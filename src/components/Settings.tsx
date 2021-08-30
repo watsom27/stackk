@@ -3,12 +3,15 @@ import { showSettingsService } from '~service/showSettingsService';
 import { Toggle } from '~components/Toggle';
 import { db, ViewMode } from '~data/Db';
 import { URLs } from '~config/URLs';
+import { shouldShowReleaseNotification } from '~service/shouldShowReleaseNotification';
 
 export function Settings(): JSX.Element {
     const [loaded, setLoaded] = useState<boolean>(false);
+    const [showReleaseNotesBold, setShowReleaseNotesBold] = useState<boolean>(false);
 
     useEffect(() => {
         setTimeout(() => setLoaded(true), 100);
+        shouldShowReleaseNotification().then(setShowReleaseNotesBold);
     }, []);
 
     const viewModeOnChange = (toggled: boolean) => {
@@ -45,7 +48,7 @@ export function Settings(): JSX.Element {
                     <br />
                     <a
                         href={URLs.release}
-                        className='link'
+                        className={`link ${showReleaseNotesBold ? 'bold' : ''}`}
                     >
                         Release Notes
                     </a>
