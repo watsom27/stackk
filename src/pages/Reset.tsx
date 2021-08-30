@@ -1,6 +1,7 @@
 import React, { Dispatch, MouseEvent, SetStateAction, useState } from 'react';
 import { Link, Redirect, useHistory } from 'react-router-dom';
 import { Wrapper } from '~components/Wrapper';
+import { URLs } from '~config/URLs';
 import { LoginService } from '~service/loginService';
 
 interface FormProps {
@@ -9,7 +10,7 @@ interface FormProps {
 }
 
 function RedirectIfLoggedIn(): JSX.Element {
-    return LoginService.isLoggedIn() ? <Redirect to='/account' /> : <></>;
+    return LoginService.isLoggedIn() ? <Redirect to={URLs.account} /> : <></>;
 }
 
 function Form({ setSubmitted, setError }: FormProps): JSX.Element {
@@ -51,7 +52,7 @@ function Result(): JSX.Element {
         <>
             <b>Success</b>
             <p>Password reset email has been sent.</p>
-            <Link to='/login' className='link'>Click to return to login page.</Link>
+            <Link to={URLs.login} className='link'>Click to return to login page.</Link>
         </>
     );
 }

@@ -2,6 +2,7 @@ import React, { Dispatch, SetStateAction, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import { Wrapper } from '~components/Wrapper';
 import { Feature, FeaturesConfig } from '~config/featuresConfig';
+import { URLs } from '~config/URLs';
 import { LoginService } from '~service/loginService';
 
 enum LoginAction {
@@ -23,7 +24,7 @@ function ResetPasswordButton(): JSX.Element {
 
     return (
         <button
-            onClick={() => history.push('/reset')}
+            onClick={() => history.push(URLs.reset)}
             type='button'
         >
             Forgot Password
@@ -35,7 +36,7 @@ function LoginRegisterButtons({ action, setAction, username, password, setError,
     let content: JSX.Element;
     const history = useHistory();
     const returnAddr = new URLSearchParams(useLocation().search).get('returnAddr');
-    const successRedirect = returnAddr ?? '/view';
+    const successRedirect = returnAddr ?? URLs.view;
 
     if (action === LoginAction.Login) {
         const btnLoginOnClick = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -106,7 +107,7 @@ export function Login(): JSX.Element {
     const history = useHistory();
 
     if (LoginService.isLoggedIn()) {
-        history.push('/view');
+        history.push(URLs.view);
     }
 
     return (

@@ -18,6 +18,10 @@ interface DbViewMode {
     value: ViewMode;
 }
 
+interface DbLatestRelease {
+    latest: string;
+}
+
 interface DbOrder {
     items: string[];
 }
@@ -26,10 +30,13 @@ enum Collection {
     Items = 'items',
     Orders = 'orders',
     ViewMode = 'viewmode',
+    LatestRelease = 'latestRelease',
 }
 
 type DbUpdateListener = () => void;
 type Unsubscribe = () => void;
+
+const DEFAULT_VERSION = 'v2.3.0';
 
 class Db {
     private updateListeners: DbUpdateListener[] = [];
@@ -47,7 +54,10 @@ class Db {
         const db = firebase.firestore();
         const userId = LoginService.getUserId();
 
-        const [viewMode, orderData] = await Promise.all(
+        const [
+            viewMode,
+            orderData,
+        ] = await Promise.all(
             [
                 db.collection(Collection.ViewMode).doc(userId).get(),
                 db.collection(Collection.Orders).doc(userId).get(),
@@ -190,6 +200,29 @@ class Db {
         this.order = [];
         this.itemCache.clear();
         this.loaded = false;
+    }
+
+    public async getLatestRelease(): Promise<string> {
+        const db = firebase.firestore();
+        const userId = LoginService.getUserId();
+        const releaseDoc = await db.collection(Collection.LatestRelease).doc(userId).get();
+        let result = DEFAULT_VERSION;
+
+        if (releaseDoc.exists) {
+            result = (releaseDoc.data() as DbLatestRelease).latest;
+        }
+
+        return result;
+    }
+
+    public async setLatestRelease(latest: string): Promise<void> {
+        const db = firebase.firestore();
+        const userId = LoginService.getUserId();
+        const newValue: DbLatestRelease = {
+            latest,
+        };
+
+        await db.collection(Collection.LatestRelease).doc(userId).set(newValue);
     }
 
     private callUpdateListeners(): void {

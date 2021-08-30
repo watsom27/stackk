@@ -65,6 +65,10 @@ a.link {
         text-decoration: underline;
     }
 
+.bold {
+    font-weight: bold;
+}
+
 @import './wrapper.css';
 @import './itemComponent.css';
 @import './newItem.css';
@@ -77,3 +81,5 @@ a.link {
 @import './reset.css';
 @import './toggle.css';
 @import './itemControls.css';
+@import './releaseNotes.css';
+@import './notificationIcon.css';
