@@ -42,7 +42,7 @@ export function ItemControls({ item, isFirst, setItems }: ItemControlsProps): JS
                     type='button'
                 />
             )}
-            <div className='bump'>
+            <div className={`bump ${isFirst ? 'curve' : ''}`}>
                 <button
                     className='btn-bump'
                     onClick={btnBumpOnClick}
@@ -55,6 +55,7 @@ export function ItemControls({ item, isFirst, setItems }: ItemControlsProps): JS
                 />
             </div>
             <button
+                className='btn-done'
                 onClick={btnDoneOnClick}
                 type='button'
             >

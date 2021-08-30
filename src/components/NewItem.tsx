@@ -44,7 +44,7 @@ export function NewItem({ setItems }: NewItemProps): JSX.Element {
                 readOnly={isReadOnly}
             />
             <button
-                className='done'
+                className='done btn-add'
                 type='button'
                 onClick={btnAddOnClick}
                 disabled={isReadOnly}
