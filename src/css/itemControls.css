@@ -6,6 +6,10 @@ div.controls {
         width: 3rem;
     }
 
+    div.controls .btn-done {
+        border-radius: 0 3px 3px 0;
+    }
+
     .controls > .bump {
         display: flex;
         flex-direction: column;
@@ -19,6 +23,14 @@ div.controls {
         background-position: center;
     }
 
+        .controls .curve > button.btn-bump {
+            border-radius: 3px 0 0 0;
+        }
+
+        .controls .curve > button.btn-bumpnt {
+            border-radius: 0 0 0 3px;
+        }
+
         button.btn-bump {
             background-image: url('~\img\up.svg');
         }
@@ -28,6 +40,7 @@ div.controls {
         }
 
     div.controls > button.btn-superbump {
+        border-radius: 3px 0 0 3px;
         width: 1.5rem;
         height: 2rem;
         background-size: 0.8rem;

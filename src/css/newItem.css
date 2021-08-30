@@ -14,3 +14,7 @@ div.new > input {
 div.new > input:focus {
     outline: none;
 }
+
+div.new .btn-add {
+    border-radius: 2px;
+}
