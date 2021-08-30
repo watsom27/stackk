@@ -17,6 +17,7 @@
   "author": "michael.watson99@icloud.com",
   "license": "ISC",
   "dependencies": {
+    "anchorme": "^2.1.2",
     "firebase": "^8.7.1",
     "js-sha256": "^0.9.0",
     "parcel-bundler": "^1.12.5",

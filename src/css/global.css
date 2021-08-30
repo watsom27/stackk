@@ -26,6 +26,8 @@ ul.no-bullets {
 
 button {
     -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
     background-color: #fff;
     color: #333;
     padding: .5rem;
