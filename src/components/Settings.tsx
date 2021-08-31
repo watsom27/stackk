@@ -53,14 +53,25 @@ export function Settings(): JSX.Element {
                         Release Notes
                     </a>
                 </div>
-                {loaded && (
-                    <button
-                        onClick={() => showSettingsService.hide()}
-                        type='button'
+                <div>
+                    <a
+                        href='https://github.com/watsom27/stackk/issues'
+                        className='report-an-issue link'
+                        target='_blank'
+                        rel='noreferrer noopener'
                     >
-                        Close
-                    </button>
-                )}
+                        Report an Issue
+                    </a>
+                    <br />
+                    {loaded && (
+                        <button
+                            onClick={() => showSettingsService.hide()}
+                            type='button'
+                        >
+                            Close
+                        </button>
+                    )}
+                </div>
             </div>
         </div>
     );
