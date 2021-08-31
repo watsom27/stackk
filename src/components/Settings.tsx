@@ -57,6 +57,8 @@ export function Settings(): JSX.Element {
                     <a
                         href='https://github.com/watsom27/stackk/issues'
                         className='report-an-issue link'
+                        target='_blank'
+                        rel='noreferrer noopener'
                     >
                         Report an Issue
                     </a>
