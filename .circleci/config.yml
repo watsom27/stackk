@@ -39,12 +39,6 @@ workflows:
 
   build_for_prod:
       jobs:
-      - lint_only:
-            filters:
-                  tags:
-                        only: /[Vv]([0-9]{1,2}\.){2}[0-9]+/
-                  branches:
-                        ignore: /.*/
       - approve-deploy:
             type: approval
             filters:
@@ -54,7 +48,6 @@ workflows:
                         ignore: /.*/
       - deploy_prod:
             requires:
-                  - lint_only
                   - approve-deploy
             filters:
                   tags:
@@ -121,6 +114,9 @@ jobs:
             - run:
                   name: Install Dependencies
                   command: npm ci
+            - run:
+                  name: Run Linter
+                  command: npm run lint
             - run:
                   name: Build
                   command: API_KEY="$API_KEY" AUTH_DOMAIN="$AUTH_DOMAIN" PROJECT_ID="$PROJECT_ID" STORAGE_BUCKET="$STORAGE_BUCKET" MESSAGE_SENDER_ID="$MESSAGE_SENDER_ID" APP_ID="$APP_ID" npm run build
