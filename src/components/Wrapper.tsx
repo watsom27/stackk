@@ -11,8 +11,6 @@ export function Wrapper({ title, children }: PropsWithChildren<WrapperProps>): J
         document.title = title
             ? `${title} - ${TITLE_SUFFIX}`
             : TITLE_SUFFIX;
-
-        window.scrollTo(0, 0);
     });
 
     return (
