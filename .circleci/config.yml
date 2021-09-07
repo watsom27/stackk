@@ -90,7 +90,7 @@ jobs:
                     command: npm ci
               - run:
                     name: Build
-                    command: API_KEY="$API_KEY" AUTH_DOMAIN="$AUTH_DOMAIN" PROJECT_ID="$PROJECT_ID" STORAGE_BUCKET="$STORAGE_BUCKET" MESSAGE_SENDER_ID="$MESSAGE_SENDER_ID" APP_ID="$APP_ID" npm run build
+                    command: API_KEY="$API_KEY_TEST" AUTH_DOMAIN="$AUTH_DOMAIN_TEST" PROJECT_ID="$PROJECT_ID_TEST" STORAGE_BUCKET="$STORAGE_BUCKET_TEST" MESSAGE_SENDER_ID="$MESSAGE_SENDER_ID_TEST" APP_ID="$APP_ID_TEST" npm run build
 
   deploy_test:
       docker:
@@ -103,7 +103,7 @@ jobs:
                   command: npm ci
             - run:
                   name: Deploy Test
-                  command: API_KEY="$API_KEY" AUTH_DOMAIN="$AUTH_DOMAIN" PROJECT_ID="$PROJECT_ID" STORAGE_BUCKET="$STORAGE_BUCKET" MESSAGE_SENDER_ID="$MESSAGE_SENDER_ID" APP_ID="$APP_ID" npm run deploy:test
+                  command: API_KEY="$API_KEY_TEST" AUTH_DOMAIN="$AUTH_DOMAIN_TEST" PROJECT_ID="$PROJECT_ID_TEST" STORAGE_BUCKET="$STORAGE_BUCKET_TEST" MESSAGE_SENDER_ID="$MESSAGE_SENDER_ID_TEST" APP_ID="$APP_ID_TEST" npm run deploy:test
 
   deploy_prod:
       docker:
