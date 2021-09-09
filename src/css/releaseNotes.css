@@ -17,6 +17,6 @@
         text-justify: inter-word;
     }
 
-    p.app-version {
-        color: grey;
-    }
+p.app-version {
+    color: grey;
+}
