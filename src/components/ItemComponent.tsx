@@ -15,6 +15,9 @@ export function ItemComponent({ item, isFirst, setItems }: ItemComponentProps): 
         input: item.value,
         options: {
             truncate: 40,
+            attributes: {
+                target: '_blank',
+            },
         },
     });
 
