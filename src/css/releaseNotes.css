@@ -16,3 +16,7 @@
     .release-notes > p {
         text-justify: inter-word;
     }
+
+    p.app-version {
+        color: grey;
+    }
