@@ -16,6 +16,8 @@ export function ReleaseNotes(): JSX.Element {
             });
     }, []);
 
+    const appVersion = process.env.APP_VERSION;
+
     return (
         <Wrapper title='Release Notes'>
             <Title title='Release Notes' showReturn />
@@ -24,6 +26,15 @@ export function ReleaseNotes(): JSX.Element {
                     <h2>{release.title}</h2>
                     <h3>{release.version}</h3>
                     <p>{release.notes}</p>
+                    {appVersion && (
+                        <i>
+                            <p className='app-version'>
+                                Current Version:
+                                {' '}
+                                {appVersion}
+                            </p>
+                        </i>
+                    )}
                 </div>
             )}
         </Wrapper>
