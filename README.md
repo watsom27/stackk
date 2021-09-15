@@ -2,7 +2,7 @@
 Small lil stack app
 
 ## Developing
-Ask me for db credentials, this is needed to login to the app.
+Dev credentials are in .env.dist.
 
 To develop locally you will need to boot up the devdb:
 
