@@ -5,10 +5,10 @@ export interface HeaderedShortcut {
     shortcuts: Shortcut[];
 }
 
-const ADDING_NEW_ITEMS: Shortcut[] = [
+const INPUT_MODE: Shortcut[] = [
     {
         shortcut: 'Enter',
-        description: 'Add item to bottom of list, or focus on input box',
+        description: 'Add item to bottom of list',
     },
     {
         shortcut: 'Shift + Enter',
@@ -16,9 +16,35 @@ const ADDING_NEW_ITEMS: Shortcut[] = [
     },
 ];
 
+const COMMAND_MODE: Shortcut[] = [
+    {
+        shortcut: 'Shift + Space',
+        description: 'Mark the top item as Done',
+    },
+];
+
+const SWITCHING_MODE: Shortcut[] = [
+    {
+        shortcut: 'Enter',
+        description: 'Enter \'Command Mode\' - Keyboard shortcuts enabled',
+    },
+    {
+        shortcut: 'Escape',
+        description: 'Enter \'Input Mode\' - Keyboard shortcuts disabled',
+    },
+];
+
 export const shortcutsConfig: HeaderedShortcut[] = [
     {
-        header: 'Item Entry',
-        shortcuts: ADDING_NEW_ITEMS,
+        header: 'Switching Between Command/Input Mode',
+        shortcuts: SWITCHING_MODE,
+    },
+    {
+        header: 'Input Mode',
+        shortcuts: INPUT_MODE,
+    },
+    {
+        header: 'Command Mode',
+        shortcuts: COMMAND_MODE,
     },
 ];
