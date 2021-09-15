@@ -1,15 +1,16 @@
 import anchorme from 'anchorme';
-import React, { Dispatch, SetStateAction } from 'react';
+import React, { Dispatch, SetStateAction, FC } from 'react';
 import { Item } from '~data/Item';
-import { ItemControls } from '~components/ItemControls';
+import { ItemControlsProps } from '~components/ItemControls';
 
 interface ItemComponentProps {
     item: Item;
     isFirst?: boolean;
     setItems: Dispatch<SetStateAction<Item[]>>;
+    Controls: FC<ItemControlsProps>;
 }
 
-export function ItemComponent({ item, isFirst, setItems }: ItemComponentProps): JSX.Element {
+export function ItemComponent({ item, isFirst, setItems, Controls }: ItemComponentProps): JSX.Element {
     const className = `item ${isFirst ? 'first' : ''}`;
     const value = anchorme({
         input: item.value,
@@ -24,7 +25,7 @@ export function ItemComponent({ item, isFirst, setItems }: ItemComponentProps): 
     return (
         <div className={className}>
             <p className='value' dangerouslySetInnerHTML={{ __html: value }} />
-            <ItemControls item={item} isFirst={isFirst} setItems={setItems} />
+            <Controls item={item} isFirst={isFirst} setItems={setItems} />
         </div>
     );
 }

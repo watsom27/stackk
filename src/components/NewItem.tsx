@@ -1,12 +1,14 @@
-import React, { Dispatch, SetStateAction, useState, KeyboardEvent, useEffect } from 'react';
+import React, { Dispatch, SetStateAction, useState, KeyboardEvent, useEffect, MutableRefObject } from 'react';
 import { db } from '~data/Db';
 import { Item } from '~data/Item';
+import { keyboardService } from '~service/keyboardService';
 
 interface NewItemProps {
     setItems: Dispatch<SetStateAction<Item[]>>;
+    thing: MutableRefObject<HTMLInputElement | undefined>;
 }
 
-export function NewItem({ setItems }: NewItemProps): JSX.Element {
+export function NewItem({ setItems, thing }: NewItemProps): JSX.Element {
     const [value, setValue] = useState<string>('');
     const [isReadOnly, setReadOnly] = useState<boolean>(false);
 
@@ -20,6 +22,11 @@ export function NewItem({ setItems }: NewItemProps): JSX.Element {
         if (value.length) {
             const newItem = Item.New(value);
             db.add(newItem);
+
+            if (keyboardService.shiftDown) {
+                db.superBump(newItem);
+            }
+
             setItemsFromDb();
             setValue('');
         }
@@ -42,6 +49,7 @@ export function NewItem({ setItems }: NewItemProps): JSX.Element {
                 type='text'
                 placeholder='Enter a new item...'
                 readOnly={isReadOnly}
+                ref={thing as any}
             />
             <button
                 className='done btn-add'

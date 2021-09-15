@@ -2,7 +2,7 @@ import React, { Dispatch, SetStateAction } from 'react';
 import { db } from '~data/Db';
 import { Item } from '~data/Item';
 
-interface ItemControlsProps {
+export interface ItemControlsProps {
     item: Item;
     isFirst?: boolean;
     setItems: Dispatch<SetStateAction<Item[]>>;

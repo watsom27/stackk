@@ -4,4 +4,5 @@ export const URLs = {
     account: '/account',
     reset: '/reset',
     release: '/release',
+    keyboardShortcuts: '/shortcuts',
 } as const;

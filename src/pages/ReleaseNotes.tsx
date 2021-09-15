@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Title } from '~components/Title';
 import { Wrapper } from '~components/Wrapper';
 import { db } from '~data/Db';
-import { githubService, Release } from '~service/GithubService';
+import { githubService, Release } from '~service/githubService';
 
 export function ReleaseNotes(): JSX.Element {
     const [release, setRelease] = useState<Release>();
