@@ -1,3 +1,4 @@
+import anchorme from 'anchorme';
 import React, { useEffect, useState } from 'react';
 import { Title } from '~components/Title';
 import { Wrapper } from '~components/Wrapper';
@@ -18,6 +19,18 @@ export function ReleaseNotes(): JSX.Element {
 
     const appVersion = process.env.APP_VERSION;
 
+    const value = release
+        ? anchorme({
+            input: release.notes,
+            options: {
+                truncate: 40,
+                attributes: {
+                    target: '_blank',
+                },
+            },
+        })
+        : '';
+
     return (
         <Wrapper title='Release Notes'>
             <Title title='Release Notes' showReturn />
@@ -25,7 +38,7 @@ export function ReleaseNotes(): JSX.Element {
                 <div className='release-notes'>
                     <h2>{release.title}</h2>
                     <h3>{release.version}</h3>
-                    <p>{release.notes}</p>
+                    <p dangerouslySetInnerHTML={{ __html: value }} />
                     {appVersion && (
                         <i>
                             <p className='app-version'>
