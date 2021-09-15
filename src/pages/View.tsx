@@ -6,27 +6,16 @@ import { Wrapper } from '~components/Wrapper';
 import { db } from '~data/Db';
 import { Item } from '~data/Item';
 import { ItemControls } from '~components/ItemControls';
-import { keyboardService } from '~service/keyboardService';
-
-interface BooleanByRef {
-    value: boolean;
-}
+import { ModeService } from '~service/modeService';
 
 export function View(): JSX.Element {
     const [items, setItems] = useState<Item[]>([]);
-    const [loaded, setLoaded] = useState<boolean>(false);
-    const [inputFocussed, setInputFocussed] = useState<BooleanByRef>({ value: false });
+    const [loaded, setLoaded] = useState(false);
     const inputRef = useRef<HTMLInputElement>();
 
+    ModeService.instance.useModeService(inputRef);
+
     const toComponent = (item: Item) => <ItemComponent key={item.id} item={item} setItems={setItems} Controls={ItemControls} />;
-
-    console.log(inputFocussed.value);
-
-    const onSpacePress = () => {
-        if (!inputFocussed.value) {
-            console.log(inputFocussed.value, 'win');
-        }
-    };
 
     useEffect(() => {
         if (!db.isLoaded()) {
@@ -37,8 +26,8 @@ export function View(): JSX.Element {
         }
     }, []);
 
-    useEffect(() => keyboardService.addListener('Enter', () => inputRef.current?.focus()), []);
-    useEffect(() => keyboardService.addListener(' ', onSpacePress), []);
+    const setItemsFromDb = () => setItems(db.getItems());
+    useEffect(() => db.addUpdateListener(setItemsFromDb), []);
 
     const first = items[0];
     const itemsClone = [...items];
@@ -53,8 +42,6 @@ export function View(): JSX.Element {
                 <NewItem
                     inputBoxRef={inputRef}
                     setItems={setItems}
-                    onFocus={() => setInputFocussed({ value: true })}
-                    onBlur={() => setInputFocussed({ value: false })}
                 />
             )}
         </Wrapper>

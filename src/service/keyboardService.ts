@@ -6,9 +6,19 @@ const KEY_MAP = new Map<string, string>([
 
 export type Callback = (...args: any[]) => void;
 
-class KeyboardService {
+export class KeyboardService {
     public shiftDown = false;
     private listeners = new Map<string, Set<Callback>>();
+
+    private static pInstance: KeyboardService;
+
+    public static get instance(): Readonly<KeyboardService> {
+        if (!KeyboardService.pInstance) {
+            KeyboardService.pInstance = new KeyboardService();
+        }
+
+        return KeyboardService.pInstance;
+    }
 
     constructor() {
         window.addEventListener('keydown', this.handleKeydown.bind(this));
@@ -18,9 +28,8 @@ class KeyboardService {
     public addListener(key: string, callback: Callback): Callback {
         const callbacks = this.listeners
             .entry(key)
-            .orConstruct(Set);
-
-        callbacks.add(callback);
+            .orConstruct(Set)
+            .add(callback);
 
         return () => callbacks.delete(callback);
     }
@@ -31,8 +40,6 @@ class KeyboardService {
         if (property) {
             (this as any)[property] = true;
         }
-
-        this.listeners.get(key)?.forEach((callback) => callback());
     }
 
     private handleKeyup({ key }: KeyboardEvent): void {
@@ -41,7 +48,7 @@ class KeyboardService {
         if (property) {
             (this as any)[property] = false;
         }
+
+        this.listeners.get(key)?.forEach((callback) => callback());
     }
 }
-
-export const keyboardService: Readonly<KeyboardService> = new KeyboardService();
