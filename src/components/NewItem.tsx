@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useState, KeyboardEvent, useEffect, MutableRefObject } from 'react';
+import React, { Dispatch, SetStateAction, useState, KeyboardEvent, MutableRefObject } from 'react';
 import { db } from '~data/Db';
 import { Item } from '~data/Item';
 import { KeyboardService } from '~service/keyboardService';

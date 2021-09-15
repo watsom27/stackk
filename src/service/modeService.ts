@@ -11,8 +11,9 @@ export enum Mode {
 // Put me in a useful place
 export type SetStateFn<T> = Dispatch<SetStateAction<T>>;
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function exhaustive(_: never): never {
-    throw new Error("You've done it wrong!");
+    throw new Error('You\'ve done it wrong!');
 }
 
 export class ModeService {
