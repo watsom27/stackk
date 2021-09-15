@@ -11,7 +11,7 @@ class KeyboardService {
     private listeners = new Map<string, Set<Callback>>();
 
     constructor() {
-        window.addEventListener('keydown', this.handleKeydown.bind(this), {});
+        window.addEventListener('keydown', this.handleKeydown.bind(this));
         window.addEventListener('keyup', this.handleKeyup.bind(this));
     }
 

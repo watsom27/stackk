@@ -27,15 +27,15 @@ export function View(): JSX.Element {
     }, []);
 
     const first = items[0];
-    const thing = [...items];
-    thing.shift();
+    const itemsClone = [...items];
+    itemsClone.shift();
 
     return (
         <Wrapper title='View'>
             <Title title='Things To Do' />
             {first && <ItemComponent item={first} isFirst setItems={setItems} Controls={ItemControls} />}
-            {thing.map(toComponent)}
-            {loaded && <NewItem thing={inputRef} setItems={setItems} />}
+            {itemsClone.map(toComponent)}
+            {loaded && <NewItem inputBoxRef={inputRef} setItems={setItems} />}
         </Wrapper>
     );
 }
