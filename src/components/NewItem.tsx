@@ -6,9 +6,11 @@ import { keyboardService } from '~service/keyboardService';
 interface NewItemProps {
     setItems: Dispatch<SetStateAction<Item[]>>;
     inputBoxRef: MutableRefObject<HTMLInputElement | undefined>;
+    onFocus: () => void;
+    onBlur: () => void;
 }
 
-export function NewItem({ setItems, inputBoxRef }: NewItemProps): JSX.Element {
+export function NewItem({ setItems, inputBoxRef, onFocus, onBlur }: NewItemProps): JSX.Element {
     const [value, setValue] = useState<string>('');
     const [isReadOnly, setReadOnly] = useState<boolean>(false);
 
@@ -50,6 +52,8 @@ export function NewItem({ setItems, inputBoxRef }: NewItemProps): JSX.Element {
                 placeholder='Enter a new item...'
                 readOnly={isReadOnly}
                 ref={inputBoxRef as any}
+                onFocus={onFocus}
+                onBlur={onBlur}
             />
             <button
                 className='done btn-add'
