@@ -91,7 +91,9 @@ export class ModeService {
                 this.switchMode(Mode.Input);
             }),
             KeyboardService.instance.addListener(' ', () => {
-                db.pop();
+                if (KeyboardService.instance.shiftDown) {
+                    db.pop();
+                }
             }),
         );
     }
