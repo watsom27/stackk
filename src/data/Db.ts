@@ -179,6 +179,7 @@ class Db {
             this.delete(firstItem);
         }
 
+        this.callUpdateListeners();
         this.persist();
     }
 
