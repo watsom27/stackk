@@ -164,10 +164,22 @@ class Db {
         return result;
     }
 
-    public add(item: Item): void {
+    public unshift(item: Item): void {
         this.itemCache.set(item.id, item);
         this.order.push(item.id);
 
+        this.persist();
+    }
+
+    public pop(): void {
+        const first = this.order[0];
+        const firstItem = this.itemCache.get(first);
+
+        if (firstItem) {
+            this.delete(firstItem);
+        }
+
+        this.callUpdateListeners();
         this.persist();
     }
 

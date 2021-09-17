@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Redirect, Route, Switch, useLocation } from 'react-router-dom';
 import { URLs } from '~config/URLs';
 import { Account } from '~pages/Account';
@@ -8,6 +8,7 @@ import { ReleaseNotes } from '~pages/ReleaseNotes';
 import { Reset } from '~pages/Reset';
 import { View } from '~pages/View';
 import { LoginService } from '~service/loginService';
+import { KeyboardShortcuts } from '~pages/KeyboardShortcuts';
 
 const OPEN_URLS: string[] = [URLs.login, URLs.reset];
 
@@ -40,6 +41,12 @@ export function Router(): JSX.Element {
         setIsLoggedIn(LoginService.isLoggedIn());
     });
 
+    useEffect(() => {
+        if (loginInitialised) {
+            document.body.style.background = '#F8F8F8';
+        }
+    }, [loginInitialised]);
+
     return loginInitialised
         ? (
             <BrowserRouter>
@@ -63,6 +70,10 @@ export function Router(): JSX.Element {
 
                     <Route path={URLs.release}>
                         <ReleaseNotes />
+                    </Route>
+
+                    <Route path={URLs.keyboardShortcuts}>
+                        <KeyboardShortcuts />
                     </Route>
 
                     <Route exact path='/'>

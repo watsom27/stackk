@@ -52,6 +52,13 @@ export function Settings(): JSX.Element {
                     >
                         Release Notes
                     </a>
+                    <br />
+                    <a
+                        href={URLs.keyboardShortcuts}
+                        className='link'
+                    >
+                        Keyboard Shortcuts
+                    </a>
                 </div>
                 <div>
                     <a
