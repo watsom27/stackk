@@ -45,6 +45,10 @@ export class ModeService {
         return Mode[this.mode];
     }
 
+    public isMode(mode: Mode): boolean {
+        return this.mode === mode;
+    }
+
     public switchMode(mode: Mode): void {
         if (mode !== this.mode) {
             this.removeCurrentListeners();
