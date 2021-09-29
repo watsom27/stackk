@@ -2,7 +2,6 @@ import firebase from 'firebase/app';
 import 'firebase/firestore';
 import { Item } from '~data/Item';
 import { LoginService } from '~service/loginService';
-import { View } from '~pages/View';
 
 export enum ViewMode {
     Work,
