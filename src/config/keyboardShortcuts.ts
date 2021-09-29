@@ -21,6 +21,10 @@ const COMMAND_MODE: Shortcut[] = [
         shortcut: 'Shift + Space',
         description: 'Mark the top item as Done',
     },
+    {
+        shortcut: 'S',
+        description: 'Toggle view mode between Home/Work',
+    },
 ];
 
 const SWITCHING_MODE: Shortcut[] = [

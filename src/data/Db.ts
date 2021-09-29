@@ -193,6 +193,12 @@ class Db {
         return this.viewMode;
     }
 
+    public toggleViewMode(): void {
+        const newViewMode = this.getViewMode() === ViewMode.Home ? ViewMode.Work : ViewMode.Home;
+
+        this.setViewMode(newViewMode);
+    }
+
     public async deleteForUser(): Promise<void> {
         const db = firebase.firestore();
 
