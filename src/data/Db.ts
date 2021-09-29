@@ -2,6 +2,7 @@ import firebase from 'firebase/app';
 import 'firebase/firestore';
 import { Item } from '~data/Item';
 import { LoginService } from '~service/loginService';
+import { View } from '~pages/View';
 
 export enum ViewMode {
     Work,
@@ -191,6 +192,12 @@ class Db {
 
     public getViewMode(): ViewMode {
         return this.viewMode;
+    }
+
+    public toggleViewMode(): void {
+        const newViewMode = this.getViewMode() === ViewMode.Home ? ViewMode.Work : ViewMode.Home;
+
+        this.setViewMode(newViewMode);
     }
 
     public async deleteForUser(): Promise<void> {

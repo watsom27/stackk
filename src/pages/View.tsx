@@ -7,6 +7,7 @@ import { db } from '~data/Db';
 import { Item } from '~data/Item';
 import { ItemControls } from '~components/ItemControls';
 import { ModeService } from '~service/modeService';
+import { KeyboardService } from '~service/keyboardService';
 
 export function View(): JSX.Element {
     const [items, setItems] = useState<Item[]>([]);
@@ -28,6 +29,7 @@ export function View(): JSX.Element {
 
     const setItemsFromDb = () => setItems(db.getItems());
     useEffect(() => db.addUpdateListener(setItemsFromDb), []);
+    useEffect(() => KeyboardService.instance.addListener('s', () => db.toggleViewMode()), []);
 
     const first = items[0];
     const itemsClone = [...items];
