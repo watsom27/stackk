@@ -94,10 +94,15 @@ export class ModeService {
                 this.inputRef.current?.focus();
                 this.switchMode(Mode.Input);
             }),
+
             KeyboardService.instance.addListener(' ', () => {
                 if (KeyboardService.instance.shiftDown) {
                     db.pop();
                 }
+            }),
+
+            KeyboardService.instance.addListener('s', () => {
+                db.toggleViewMode();
             }),
         );
     }
