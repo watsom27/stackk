@@ -1,7 +1,7 @@
 import { SetStateAction, Dispatch, MutableRefObject, useState } from 'react';
 import { KeyboardService, Callback } from '~service/keyboardService';
 import { db } from '~data/Db';
-import { showSettingsService } from './showSettingsService';
+import { showSettingsService } from '~service/showSettingsService';
 
 export enum Mode {
     Input,

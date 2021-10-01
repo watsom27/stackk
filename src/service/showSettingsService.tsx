@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, unmountComponentAtNode } from 'react-dom';
 import { Settings } from '~components/Settings';
-import { KeyboardService } from './keyboardService';
+import { KeyboardService } from '~service/keyboardService';
 
 export interface ModalProps {
     keyDownCallback?: (event: React.KeyboardEvent<HTMLDivElement>) => void;
