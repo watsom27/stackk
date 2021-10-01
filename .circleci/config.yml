@@ -22,6 +22,24 @@ workflows:
                         ignore:
                             - master
                             - project
+      - approve-build-for-test:
+            type: approval
+            filters:
+                  branches:
+                        ignore:
+                            - master
+                            - project
+      - deploy_test:
+            requires:
+                  - lint_only
+                  - build_only
+                  - cloc
+                  - approve-build-for-test
+            filters:
+                  branches:
+                        ignore:
+                            - master
+                            - project
 
   build_for_test:
       jobs:
