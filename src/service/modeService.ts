@@ -107,6 +107,8 @@ export class ModeService {
                     db.toggleViewMode();
                 }
             }),
+
+            KeyboardService.instance.addListener('Escape', () => showSettingsService.toggle()),
         );
     }
 }

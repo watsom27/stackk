@@ -1,7 +1,6 @@
 import React from 'react';
 import { render, unmountComponentAtNode } from 'react-dom';
 import { Settings } from '~components/Settings';
-import { KeyboardService } from '~service/keyboardService';
 
 export interface ModalProps {
     keyDownCallback?: (event: React.KeyboardEvent<HTMLDivElement>) => void;
@@ -10,10 +9,6 @@ export interface ModalProps {
 class ShowSettingsService {
     private modalNode = document.getElementById('modal')!;
     private visible = false;
-
-    constructor() {
-        KeyboardService.instance.addListener('Escape', () => this.toggle());
-    }
 
     public isVisible(): boolean {
         return this.visible;
@@ -31,7 +26,7 @@ class ShowSettingsService {
         unmountComponentAtNode(this.modalNode);
     }
 
-    private toggle(): void {
+    public toggle(): void {
         if (this.visible) {
             this.hide();
         } else {
