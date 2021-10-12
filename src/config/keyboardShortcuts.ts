@@ -18,12 +18,12 @@ const INPUT_MODE: Shortcut[] = [
 
 const COMMAND_MODE: Shortcut[] = [
     {
-        shortcut: 'Escape',
-        description: 'Show/Hide Settings Menu',
-    },
-    {
         shortcut: 'Shift + Space',
         description: 'Mark the top item as Done',
+    },
+    {
+        shortcut: 'E',
+        description: 'Show/Hide Settings Menu',
     },
     {
         shortcut: 'S',
