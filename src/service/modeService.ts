@@ -10,7 +10,7 @@ export enum Mode {
 
 // TODO:
 // Put me in a useful place
-type SetStateFn<T> = Dispatch<SetStateAction<T>>;
+export type SetStateFn<T> = Dispatch<SetStateAction<T>>;
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 function exhaustive(_: never): never {
@@ -26,7 +26,7 @@ export class ModeService {
     private inputRef!: MutableRefObject<HTMLInputElement | undefined>;
 
     private constructor() {
-        this.setCommandModeListeners();
+        this.setCommandMode();
     }
 
     public static get instance(): ModeService {
@@ -56,11 +56,11 @@ export class ModeService {
 
             switch (mode) {
                 case Mode.Input:
-                    this.setInputModeListeners();
+                    this.setInputMode();
                     break;
 
                 case Mode.Command:
-                    this.setCommandModeListeners();
+                    this.setCommandMode();
                     break;
 
                 default:
@@ -80,7 +80,7 @@ export class ModeService {
         }
     }
 
-    private setInputModeListeners(): void {
+    private setInputMode(): void {
         this.listeners.push(
             KeyboardService.instance.addListener('Escape', () => {
                 this.inputRef.current?.blur();
@@ -89,29 +89,23 @@ export class ModeService {
         );
     }
 
-    private setCommandModeListeners(): void {
-        const keyboardService = KeyboardService.instance;
-
+    private setCommandMode(): void {
         this.listeners.push(
-            keyboardService.addListener('Enter', () => {
+            KeyboardService.instance.addListener('Enter', () => {
                 this.inputRef.current?.focus();
                 this.switchMode(Mode.Input);
             }),
 
-            keyboardService.addListener(' ', () => {
-                if (keyboardService.shiftDown) {
+            KeyboardService.instance.addListener(' ', () => {
+                if (KeyboardService.instance.shiftDown) {
                     db.pop();
                 }
             }),
 
-            keyboardService.addListener('s', () => {
+            KeyboardService.instance.addListener('s', () => {
                 if (!showSettingsService.isVisible()) {
                     db.toggleViewMode();
                 }
-            }),
-
-            keyboardService.addListener('e', () => {
-                showSettingsService.toggle();
             }),
         );
     }
