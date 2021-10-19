@@ -39,17 +39,24 @@ type Unsubscribe = () => void;
 const DEFAULT_VERSION = 'v2.3.0';
 
 class Db {
-    private updateListeners: DbUpdateListener[] = [];
+    private updateListeners = new Set<DbUpdateListener>();
     private itemCache = new Map<string, Item>();
     private order: string[] = [];
     private transactionNumber = 0;
     private loaded = false;
     private viewMode: ViewMode = ViewMode.Work;
 
+    /**
+     * Clear and reload the DB.
+     * Call update listeners before and after
+     * so the user gets a visual cue
+     */
     public async reload(): Promise<void> {
         this.itemCache.clear();
         this.order = [];
         this.loaded = false;
+
+        this.callUpdateListeners();
 
         await this.load();
 
@@ -102,12 +109,17 @@ class Db {
         this.loaded = true;
     }
 
+    /**
+     * Add a listener to be called when the db is updated
+     * and this change needs to be reflected in the view
+     *
+     * @param {DbUpdateListener} listener Listener to call
+     * @returns {Unsubscribe} Unsubscribe callback
+     */
     public addUpdateListener(listener: DbUpdateListener): Unsubscribe {
-        this.updateListeners.push(listener);
+        this.updateListeners.add(listener);
 
-        return () => {
-            this.updateListeners = this.updateListeners.filter((l) => l !== listener);
-        };
+        return () => this.updateListeners.delete(listener);
     }
 
     public delete(item: Item): void {
@@ -209,6 +221,9 @@ class Db {
         this.setViewMode(newViewMode);
     }
 
+    /**
+     * Delete all records for the currently logged in user
+     */
     public async deleteForUser(): Promise<void> {
         const db = firebase.firestore();
 
