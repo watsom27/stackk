@@ -46,6 +46,16 @@ class Db {
     private loaded = false;
     private viewMode: ViewMode = ViewMode.Work;
 
+    public async reload(): Promise<void> {
+        this.itemCache.clear();
+        this.order = [];
+        this.loaded = false;
+
+        await this.load();
+
+        this.callUpdateListeners();
+    }
+
     public isLoaded(): boolean {
         return this.loaded;
     }

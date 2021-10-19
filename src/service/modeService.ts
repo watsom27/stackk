@@ -80,6 +80,9 @@ export class ModeService {
         }
     }
 
+    /**
+     * Add listeners for keyboard shortcuts in input mode
+     */
     private setInputModeListeners(): void {
         this.listeners.push(
             KeyboardService.instance.addListener('Escape', () => {
@@ -89,6 +92,9 @@ export class ModeService {
         );
     }
 
+    /**
+     * Add listeners for keyboard shortcuts in command mode
+     */
     private setCommandModeListeners(): void {
         const keyboardService = KeyboardService.instance;
 
@@ -112,6 +118,10 @@ export class ModeService {
 
             keyboardService.addListener('e', () => {
                 showSettingsService.toggle();
+            }),
+
+            keyboardService.addListener('r', () => {
+                db.reload();
             }),
         );
     }
