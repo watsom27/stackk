@@ -29,6 +29,10 @@ const COMMAND_MODE: Shortcut[] = [
         shortcut: 'S',
         description: 'Toggle view mode between Home/Work',
     },
+    {
+        shortcut: 'R',
+        description: 'Reload items',
+    },
 ];
 
 const SWITCHING_MODE: Shortcut[] = [

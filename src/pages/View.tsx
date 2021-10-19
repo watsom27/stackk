@@ -24,7 +24,7 @@ export function View(): JSX.Element {
                 setItems(db.getItems());
             });
         }
-    }, []);
+    });
 
     const setItemsFromDb = () => setItems(db.getItems());
     useEffect(() => db.addUpdateListener(setItemsFromDb), []);
