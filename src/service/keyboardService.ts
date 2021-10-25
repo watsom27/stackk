@@ -1,4 +1,5 @@
 import { RustMap as Map } from 'rust-map';
+import { LoginService } from '~service/loginService';
 
 const KEY_MAP = new Map<string, string>([
     ['Shift', 'shiftDown'],
@@ -6,6 +7,9 @@ const KEY_MAP = new Map<string, string>([
 
 export type Callback = (...args: any[]) => void;
 
+/**
+ * Keyboard shortcuts are only listened for when user is logged in
+ */
 export class KeyboardService {
     public shiftDown = false;
     private listeners = new Map<string, Set<Callback>>();
@@ -35,20 +39,24 @@ export class KeyboardService {
     }
 
     private handleKeydown({ key }: KeyboardEvent): void {
-        const property = KEY_MAP.get(key);
+        if (LoginService.isLoggedIn()) {
+            const property = KEY_MAP.get(key);
 
-        if (property) {
-            (this as any)[property] = true;
+            if (property) {
+                (this as any)[property] = true;
+            }
         }
     }
 
     private handleKeyup({ key }: KeyboardEvent): void {
-        const property = KEY_MAP.get(key);
+        if (LoginService.isLoggedIn()) {
+            const property = KEY_MAP.get(key);
 
-        if (property) {
-            (this as any)[property] = false;
+            if (property) {
+                (this as any)[property] = false;
+            }
+
+            this.listeners.get(key)?.forEach((callback) => callback());
         }
-
-        this.listeners.get(key)?.forEach((callback) => callback());
     }
 }
