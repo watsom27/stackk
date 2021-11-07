@@ -1,4 +1,3 @@
-FROM nginx
+FROM watsom27/spa:v1.0.1
 
-COPY ./nginx.conf ./etc/nginx/nginx.conf
 COPY ./dist /usr/share/nginx/html
