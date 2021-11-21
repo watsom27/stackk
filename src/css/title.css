@@ -11,15 +11,26 @@ div.logout-pad {
     margin: 0 0.8rem;
 }
 
-div.logout {
+div.logout-button {
     cursor: pointer;
-    background-image: url('~img/logout.svg');
     background-position: center;
     background-repeat: no-repeat;
 }
 
-    div.logout:hover {
+    div.logout-button.out {
+        background-image: url('~img/logout.svg');
+    }
+
+    div.logout-button:hover.out {
         background-image: url('~/img/logout-hovered.svg');
+    }
+
+    div.logout-button.in {
+        background-image: url('~img/login.svg');
+    }
+
+    div.logout-button:hover.in {
+        background-image: url('~/img/login-hovered.svg');
     }
 
 div.settings-icon {
