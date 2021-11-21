@@ -10,7 +10,7 @@ import { View } from '~pages/View';
 import { LoginService } from '~service/loginService';
 import { KeyboardShortcuts } from '~pages/KeyboardShortcuts';
 
-const OPEN_URLS: string[] = [URLs.login, URLs.reset];
+const OPEN_URLS: string[] = [URLs.login, URLs.reset, URLs.release];
 
 function LoginRedirect(): JSX.Element {
     const { pathname } = useLocation();
