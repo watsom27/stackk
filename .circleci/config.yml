@@ -126,6 +126,11 @@ jobs:
             - run:
                   name: Run Linter
                   command: npm run lint
+            - setup_remote_docker:
+                  version: 20.10.7
+            - run:
+                  name: Docker Login
+                  command: docker login -u $DOCKER_USER -p $DOCKER_PASS
             - run:
                   name: Build Assets
                   command: API_KEY="$API_KEY" AUTH_DOMAIN="$AUTH_DOMAIN" PROJECT_ID="$PROJECT_ID" STORAGE_BUCKET="$STORAGE_BUCKET" MESSAGE_SENDER_ID="$MESSAGE_SENDER_ID" APP_ID="$APP_ID" APP_VERSION="$CIRCLE_TAG" npm run build
