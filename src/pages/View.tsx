@@ -8,7 +8,7 @@ import { Item } from '~data/Item';
 import { ItemControls } from '~components/ItemControls';
 import { ModeService } from '~service/modeService';
 
-export function View(): JSX.Element {
+export default function View(): JSX.Element {
     const [items, setItems] = useState<Item[]>([]);
     const [loaded, setLoaded] = useState(false);
     const inputRef = useRef<HTMLInputElement>();

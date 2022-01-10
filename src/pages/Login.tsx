@@ -97,7 +97,7 @@ function Title({ action }: { action: LoginAction }): JSX.Element {
         : <h2>Register</h2>;
 }
 
-export function Login(): JSX.Element {
+export default function Login(): JSX.Element {
     const [username, setUsername] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [action, setAction] = useState<LoginAction>(LoginAction.Login);

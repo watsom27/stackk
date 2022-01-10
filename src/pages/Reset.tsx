@@ -57,7 +57,7 @@ function Result(): JSX.Element {
     );
 }
 
-export function Reset(): JSX.Element {
+export default function Reset(): JSX.Element {
     const [submitted, setSubmitted] = useState<boolean>(false);
     const [error, setError] = useState<string>();
     const history = useHistory();

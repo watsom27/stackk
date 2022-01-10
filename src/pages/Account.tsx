@@ -5,7 +5,7 @@ import { Title } from '~components/Title';
 import { Wrapper } from '~components/Wrapper';
 import { LoginService } from '~service/loginService';
 
-export function Account(): JSX.Element {
+export default function Account(): JSX.Element {
     return (
         <Wrapper title='My Account'>
             <Title title='My Account' showReturn />
