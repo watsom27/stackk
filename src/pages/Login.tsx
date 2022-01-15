@@ -113,6 +113,8 @@ export default function Login(): JSX.Element {
     return (
         <Wrapper title='Login'>
             <form>
+                <br />
+                <h1>Stackk</h1>
                 <div className='login-page-wrapper'>
                     <div className='login-backdrop'>
                         <Title action={action} />
