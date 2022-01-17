@@ -19,9 +19,9 @@ export default function View(): JSX.Element {
 
     useEffect(() => {
         if (!db.isLoaded()) {
-            db.load().then(() => {
+            db.getOrphaned().then((items) => {
                 setLoaded(true);
-                setItems(db.getItems());
+                setItems(items);
             });
         }
     });

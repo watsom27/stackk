@@ -221,6 +221,22 @@ class Db {
         this.setViewMode(newViewMode);
     }
 
+    public async getOrphaned(): Promise<Item[]> {
+        const userId = LoginService.getUserId();
+        const dbitems = await firebase.firestore().collection(Collection.Items).where('userId', '==', userId).get();
+        const items: Item[] = [];
+
+        for (const dbitem of dbitems.docs) {
+            const item = dbitem.data() as DbItem;
+
+            if (!this.order.includes(dbitem.id)) {
+                items.push(new Item(userId, item.value, dbitem.id, ViewMode.Work));
+            }
+        }
+
+        return items;
+    }
+
     /**
      * Delete all records for the currently logged in user
      */
