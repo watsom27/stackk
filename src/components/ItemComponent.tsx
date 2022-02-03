@@ -15,7 +15,7 @@ export function ItemComponent({ item, isFirst, setItems, Controls }: ItemCompone
     const value = anchorme({
         input: item.value,
         options: {
-            truncate: 40,
+            truncate: 50,
             attributes: {
                 target: '_blank',
             },

@@ -23,7 +23,7 @@ export class Item {
         return this._value;
     }
 
-    public get id():string {
+    public get id(): string {
         return this._id;
     }
 
