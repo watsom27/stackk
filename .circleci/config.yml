@@ -88,7 +88,7 @@ jobs:
                   command: docker login -u $DOCKER_USER -p $DOCKER_PASS
             - run:
                   name: Build Assets
-                  command: API_KEY="$API_KEY" AUTH_DOMAIN="$AUTH_DOMAIN" PROJECT_ID="$PROJECT_ID" STORAGE_BUCKET="$STORAGE_BUCKET" MESSAGE_SENDER_ID="$MESSAGE_SENDER_ID" APP_ID="$APP_ID" APP_VERSION="$CIRCLE_TAG" npm run build
+                  command: API_KEY="$API_KEY" AUTH_DOMAIN="$AUTH_DOMAIN" PROJECT_ID="$PROJECT_ID" STORAGE_BUCKET="$STORAGE_BUCKET" MESSAGE_SENDER_ID="$MESSAGE_SENDER_ID" APP_ID="$APP_ID" APP_VERSION="$CIRCLE_TAG" REPORTING_TOKEN="$REPORTING_TOKEN" npm run build
             - run:
                   name: Build Container
                   command: docker build -t watsom27/stackk:$CIRCLE_TAG .
