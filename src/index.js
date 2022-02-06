@@ -9,7 +9,7 @@ const isProduction = process.env.NODE_ENV === 'production';
 
 // Increment hit counter
 if (isProduction) {
-    fetch('http://localhost:8000/api/hits/update/stackk', {
+    fetch('https://reporting.watson-dev.co.uk/api/hits/update/stackk', {
         method: 'PUT',
         headers: {
             Authorization: `Bearer ${process.env.REPORTING_TOKEN}`,
