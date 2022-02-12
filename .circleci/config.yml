@@ -20,19 +20,19 @@ workflows:
 
   deploy_prod:
       jobs:
-      - deploy_prod
-            # filters:
-            #       tags:
-            #             only: /[Vv]([0-9]{1,2}\.){2}[0-9]+/
-            #       branches:
-            #             ignore: /.*/
+      - deploy_prod:
+            filters:
+                  tags:
+                        only: /[Vv]([0-9]{1,2}\.){2}[0-9]+/
+                  branches:
+                        ignore: /.*/
 
   deploy_docs_server:
       jobs:
-      - deploy_docs_server
-            # filters:
-            #     branches:
-            #         only: master
+      - deploy_docs_server:
+            filters:
+                branches:
+                    only: master
 
 
 jobs:
