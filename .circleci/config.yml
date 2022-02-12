@@ -3,7 +3,7 @@ orbs:
   node: circleci/node@3.0.0
 
 workflows:
-  lint_and_build:
+  lint_test_web:
     jobs:
       - lint_test_web:
             filters:
@@ -17,6 +17,13 @@ workflows:
                         ignore:
                             - master
                             - project
+
+  lint_test_server:
+      jobs:
+      - lint_test_server:
+            filters:
+                  branches:
+                        ignore: master
 
   deploy_prod:
       jobs:
