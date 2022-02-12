@@ -42,7 +42,7 @@ export class LoginService {
                 result = {
                     success: true,
                 };
-            } catch (e) {
+            } catch (e: any) {
                 result = {
                     success: false,
                     reason: e.message,
@@ -86,7 +86,7 @@ export class LoginService {
                     reason: 'Something shit itself',
                 };
             }
-        } catch (e) {
+        } catch (e: any) {
             result = {
                 success: false,
                 reason: e.message,
