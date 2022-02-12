@@ -114,7 +114,7 @@ jobs:
                   command: docker login -u $DOCKER_USER -p $DOCKER_PASS
             - run:
                   name: Build Container
-                  command: docker build -t watsom27/stackk:server-$CIRCLE_TAG -f Dockerfile.server --build-arg API_KEY="$API_KEY" --build-arg AUTH_DOMAIN="$AUTH_DOMAIN" --build-arg PROJECT_ID="$PROJECT_ID" --build-arg STORAGE_BUCKET="$STORAGE_BUCKET" --build-arg MESSAGE_SENDER_ID="$MESSAGE_SENDER_ID" --build-arg APP_ID="$APP_ID" --build-arg APP_VERSION="$CIRCLE_TAG" --build-arg REPORTING_TOKEN="$REPORTING_TOKEN".
+                  command: docker build -t watsom27/stackk:server-$CIRCLE_TAG -f Dockerfile.server --build-arg API_KEY="$API_KEY" --build-arg AUTH_DOMAIN="$AUTH_DOMAIN" --build-arg PROJECT_ID="$PROJECT_ID" --build-arg STORAGE_BUCKET="$STORAGE_BUCKET" --build-arg MESSAGE_SENDER_ID="$MESSAGE_SENDER_ID" --build-arg APP_ID="$APP_ID" --build-arg APP_VERSION="$CIRCLE_TAG" --build-arg REPORTING_TOKEN="$REPORTING_TOKEN" .
             - run:
                   name: Push To Repository
                   command: docker push watsom27/stackk:$CIRCLE_TAG
