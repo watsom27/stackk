@@ -9,6 +9,8 @@
     "lint:fix": "eslint --fix --ext .tsx,.ts src/",
     "start:dev": "npm run nukedist && parcel src/index.html",
     "start:dev:win": "parcel src/index.html",
+    "watch": "npm run nukedist && parcel watch src/index.html",
+    "watch:win": "parcel watch src/index.html",
     "build": "npm run nukedist && tsc --noEmit && parcel build src/index.html --no-source-maps",
     "build:win": "tsc --noEmit && parcel build src/index.html --no-source-maps",
     "start:db": "firebase emulators:start --only firestore --import=./localdbdata --export-on-exit"
@@ -17,7 +19,7 @@
   "license": "ISC",
   "dependencies": {
     "anchorme": "^2.1.2",
-    "firebase": "^8.7.1",
+    "firebase": "^8.10.1",
     "js-sha256": "^0.9.0",
     "parcel-bundler": "^1.12.5",
     "react": "^17.0.2",
@@ -38,6 +40,6 @@
     "eslint-plugin-react": "^7.24.0",
     "eslint-plugin-react-hooks": "^4.2.0",
     "firebase-tools": "^9.12.1",
-    "typescript": "^4.3.2"
+    "typescript": "^4.5.5"
   }
 }

@@ -1,16 +1,11 @@
 version: 2.1
 orbs:
   node: circleci/node@3.0.0
+
 workflows:
-  lint_and_build:
+  lint_test_web:
     jobs:
-      - lint_only:
-            filters:
-                  branches:
-                        ignore:
-                            - master
-                            - project
-      - build_only:
+      - lint_test_web:
             filters:
                   branches:
                         ignore:
@@ -23,7 +18,14 @@ workflows:
                             - master
                             - project
 
-  build_for_prod:
+  lint_test_server:
+      jobs:
+      - lint_test_server:
+            filters:
+                  branches:
+                        ignore: master
+
+  deploy_prod:
       jobs:
       - deploy_prod:
             filters:
@@ -31,6 +33,14 @@ workflows:
                         only: /[Vv]([0-9]{1,2}\.){2}[0-9]+/
                   branches:
                         ignore: /.*/
+
+  deploy_docs_server:
+      jobs:
+      - deploy_docs_server:
+            filters:
+                branches:
+                    only: master
+
 
 jobs:
   cloc:
@@ -40,10 +50,10 @@ jobs:
     steps:
         - checkout
         - run:
-              name: Count
-              command: npx cloc src
+              name: Count Web
+              command: cd web && npx cloc src
 
-  lint_only:
+  lint_test_web:
     docker:
         - image: circleci/node:12.18.3
     working_directory: ~/repo
@@ -51,23 +61,48 @@ jobs:
         - checkout
         - run:
               name: Install Dependencies
-              command: npm ci
+              command: cd web && npm ci
         - run:
               name: Run Linter
-              command: npm run lint
+              command: cd web && npm run lint
+        - run:
+              name: Run Tests
+              command: cd web && npm run test
+        - run:
+              name: Run Build
+              command: cd web && npm run build
 
-  build_only:
-        docker:
-              - image: circleci/node:12.18.3
-        working_directory: ~/repo
-        steps:
-              - checkout
-              - run:
-                    name: Install Dependencies
-                    command: npm ci
-              - run:
-                    name: Build
-                    command: API_KEY="$API_KEY_TEST" AUTH_DOMAIN="$AUTH_DOMAIN_TEST" PROJECT_ID="$PROJECT_ID_TEST" STORAGE_BUCKET="$STORAGE_BUCKET_TEST" MESSAGE_SENDER_ID="$MESSAGE_SENDER_ID_TEST" APP_ID="$APP_ID_TEST" npm run build
+  lint_test_server:
+    docker:
+      - image: cimg/rust:1.58
+    resource_class: xlarge
+    steps:
+      - checkout
+      - run:
+          name: Remove Fast Build Shit
+          command: rm -rf .cargo
+      - run:
+          name: Install Open-SSL
+          command: sudo apt update; sudo apt install pkg-config libssl-dev
+      - run:
+          name: Install Stable
+          command: rustup toolchain add stable
+      - restore_cache:
+          keys:
+            - cache-{{ checksum "Cargo.toml" }} - {{ checksum ".circleci/config.yml" }}
+      - run:
+          name: Run Build
+          command: cargo +stable build --release
+      - save_cache:
+          key: cache-{{ checksum "Cargo.toml" }} - {{ checksum ".circleci/config.yml" }}
+          paths:
+            - target
+      - run:
+          name: Run Clippy
+          command: cargo +stable clippy --release
+      - run:
+          name: Run Test
+          command: cargo +stable test --release
 
   deploy_prod:
       docker:
@@ -76,25 +111,57 @@ jobs:
       steps:
             - checkout
             - run:
-                  name: Install Dependencies
-                  command: npm ci
-            - run:
-                  name: Run Linter
-                  command: npm run lint
+                  name: Remove Fast Build Shit
+                  command: rm -rf .cargo
             - setup_remote_docker:
+                  docker_layer_caching: true
                   version: 20.10.7
             - run:
                   name: Docker Login
                   command: docker login -u $DOCKER_USER -p $DOCKER_PASS
             - run:
-                  name: Build Assets
-                  command: API_KEY="$API_KEY" AUTH_DOMAIN="$AUTH_DOMAIN" PROJECT_ID="$PROJECT_ID" STORAGE_BUCKET="$STORAGE_BUCKET" MESSAGE_SENDER_ID="$MESSAGE_SENDER_ID" APP_ID="$APP_ID" APP_VERSION="$CIRCLE_TAG" REPORTING_TOKEN="$REPORTING_TOKEN" npm run build
-            - run:
                   name: Build Container
-                  command: docker build -t watsom27/stackk:$CIRCLE_TAG .
+                  command: docker build -t watsom27/stackk:server-$CIRCLE_TAG -f Dockerfile.server --build-arg API_KEY="$API_KEY" --build-arg AUTH_DOMAIN="$AUTH_DOMAIN" --build-arg PROJECT_ID="$PROJECT_ID" --build-arg STORAGE_BUCKET="$STORAGE_BUCKET" --build-arg MESSAGE_SENDER_ID="$MESSAGE_SENDER_ID" --build-arg APP_ID="$APP_ID" --build-arg APP_VERSION="$CIRCLE_TAG" --build-arg REPORTING_TOKEN="$REPORTING_TOKEN" .
             - run:
                   name: Push To Repository
                   command: docker push watsom27/stackk:$CIRCLE_TAG
             - run:
                   name: Print Version Number
                   command: echo "New Container Version - $CIRCLE_TAG"
+
+  deploy_docs_server:
+    docker:
+      - image: cimg/rust:1.58
+    resource_class: xlarge
+    steps:
+      - checkout
+      - run:
+          name: Remove Fast Build Shit
+          command: rm -rf .cargo
+      - run:
+          name: Install Open-SSL
+          command: sudo apt update; sudo apt install pkg-config libssl-dev
+      - restore_cache:
+          keys:
+            - cache-{{ checksum "Cargo.toml" }} - {{ checksum ".circleci/config.yml" }}
+      - run:
+          name: Cargo Doc
+          command: cargo doc
+      - save_cache:
+          key: cache-{{ checksum "Cargo.toml" }} - {{ checksum ".circleci/config.yml" }}
+          paths:
+            - target
+      - setup_remote_docker:
+          version: 20.10.7
+      - run:
+          name: Docker Login
+          command: docker login -u $DOCKER_USER -p $DOCKER_PASS
+      - run:
+          name: Build Container
+          command: docker build -t watsom27/stackk:docs -f Dockerfile.docs .
+      - run:
+          name: Push To Repository
+          command: docker push watsom27/stackk:docs
+      - run:
+          name: Deploy New Image
+          command: curl -X POST -k $WEBHOOK_URL
