@@ -117,3 +117,13 @@ dist
 #firebase
 /.firebase
 /localdbdata
+
+public/
+data/
+target/
+node_modules/
+dist/
+.cache/
+.env
+.cargo/config.toml
+.DS_Store

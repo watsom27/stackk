@@ -1,0 +1,45 @@
+# Build rust
+FROM rust:1.58 as build_server
+WORKDIR /usr/src/server
+
+## Build dependancies with dummy src for Docker Layer Caching
+RUN USER=root cargo init
+COPY ./Cargo.toml ./Cargo.toml
+COPY ./Cargo.lock ./Cargo.lock
+RUN cargo build --release
+
+## Replace dummy src with actual and build
+RUN rm src/*.rs
+COPY ./src ./src
+RUN rm ./target/release/deps/stackk*
+RUN cargo build --release
+
+# Build web assets
+FROM node as build_web
+ARG API_KEY
+ARG AUTH_DOMAIN
+ARG PROJECT_ID
+ARG STORAGE_BUCKET
+ARG MESSAGE_SENDER_ID
+ARG APP_ID
+ARG CIRCLE_TAG
+ARG REPORTING_TOKEN
+
+WORKDIR /usr/src/web
+COPY ./web .
+RUN npm ci
+RUN API_KEY="$API_KEY" AUTH_DOMAIN="$AUTH_DOMAIN" PROJECT_ID="$PROJECT_ID" STORAGE_BUCKET="$STORAGE_BUCKET" MESSAGE_SENDER_ID="$MESSAGE_SENDER_ID" APP_ID="$APP_ID" APP_VERSION="$CIRCLE_TAG" REPORTING_TOKEN="$REPORTING_TOKEN" npm run build
+
+# Final container
+FROM debian:buster-slim as prod
+WORKDIR /usr/src/server
+
+## Install cURL for the healthcheck
+RUN apt-get update; apt-get install -y curl
+
+## Copy assets from build containers
+COPY --from=build_server usr/src/server/target/release/stackk ./server
+COPY ./Rocket.toml .
+COPY --from=build_web usr/src/web/dist/ ./public/
+
+CMD ["./server"]

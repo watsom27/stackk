@@ -1,0 +1,4 @@
+FROM nginx
+
+COPY ./target/doc/ /usr/share/nginx/html/stackk
+COPY ./.docs/index.html /usr/share/nginx/html/stackk
