@@ -8,7 +8,7 @@ div.new > input {
     padding: 1rem;
     width: 80%;
     display: block;
-    background: rgb(255, 248, 248);
+    background: rgb(249, 251, 255);
 }
 
 div.new > input:focus {
