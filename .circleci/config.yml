@@ -29,10 +29,8 @@ workflows:
       jobs:
       - deploy_prod:
             filters:
-                  tags:
-                        only: /[Vv]([0-9]{1,2}\.){2}[0-9]+/
                   branches:
-                        ignore: /.*/
+                        only: master
 
   deploy_docs_server:
       jobs:

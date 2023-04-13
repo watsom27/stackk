@@ -15,7 +15,7 @@ RUN rm ./target/release/deps/stackk*
 RUN cargo build --release
 
 # Build web assets
-FROM node as build_web
+FROM node:16 as build_web
 ARG API_KEY
 ARG AUTH_DOMAIN
 ARG PROJECT_ID
