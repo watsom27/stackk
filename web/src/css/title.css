@@ -44,3 +44,7 @@ div.settings-icon {
     div.settings-icon:hover {
         background-image: url('~/img/cog-hovered.svg');
     }
+
+h5.error {
+    color: red;
+}
